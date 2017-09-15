@@ -1,0 +1,17 @@
+. 如果有两个变量, 并且想标记出它们之间的相关关系(correlation), 散点图是一种解决方案.
+
+  这种类型的图形也非常有用, 它可以作为更高级的多维数据可视化的基础, 比如绘制散点图矩阵( scatter plot matrix )
+
+. 准备工作
+
+  散点图显示两组数据的值. 数据可视化的工作由一组并不由线条连接的点完成. 每个点的坐标位置由变量的值决定. 一个变量是自变量(或称为无关变量, independent variable), 另一个是应变量(或称为相关变量, dependent variable). 应变量通常绘制在y轴上.
+
+. 例子代码: correlation.py
+
+  绘制了两幅图, 一个是不相关数据, 另一个是强正相关数据( strong positive correlation )
+
+  在这里, 我们也使用了很多参数, 如用来设置图形颜色的color、用来设置点状标记(默认是circle)的 marker、alpha(alpha 透明度)、edgecolors(标记的边界颜色) 和 label(用于图例框)
+
+. 工作原理
+
+  散点图通常在应用 拟合回归函数之前绘制, 用来识别两个变量之间的关联. 它很好的呈现了相关性的视觉画面, 尤其是对于非线性关系的数据. matplotlib 提供的 scatter() 函数用来绘制与 x 相同长度的一维数组( unidimensional array) y 的散点图. 

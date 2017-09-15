@@ -1,0 +1,9 @@
+²Î¼û:
+
+     https://docs.djangoproject.com/en/1.10/topics/logging/
+
+     http://blog.csdn.net/clh604/article/details/9282651
+
+     http://davidbj.blog.51cto.com/4159484/1433741/
+
+. 

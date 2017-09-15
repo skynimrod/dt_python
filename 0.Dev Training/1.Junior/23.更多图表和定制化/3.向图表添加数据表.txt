@@ -1,0 +1,27 @@
+. 虽然 matplotlib 主要是一个绘图的库, 但它可以在绘图时 帮我们做一些琐事, 比如在漂亮的图表旁放置一个整齐的数据表格.
+
+. 准备工作
+
+      首先，重要的是理解为什么要想图表添加表格. 为数据绘制可视化图形的主要目的是解释那些不能理解(或者很难理解)的数据值. 现在, 我们想把数据添加回来. 仅仅在图表下面生硬的添加一张大表格显示是不明智的做法.
+
+      但是, 通过精心挑选的, 来自数据整体集合的总结性的或者突出强调的值可以识别出图表的重要部分, 或者在一些地方强调一些非常重要的值.  在这些地方, 这些精确的值(例如以 USD为 单位的年销售额) 是非常重要的(或者是必须的)   
+
+.例子代码:   3_datagrid.py
+
+. 工作原理
+
+      使用plt.table() 方式创建了一个带单元格的表格, 并把它添加到当前坐标轴中. 表格可以有(可选的) 行标题和列标题. 每个单元格包含文本或补片. 表格的列宽和行高是可以指定的. 返回值是一个组成表格的对象(文本、线条和补片实例)的序列.
+
+      基本的函数签名如下:
+
+      table( cellText=None, cellColours = None,
+             cellLoc='right', colWidths = None,
+             rowLabels=None, rowColours = None, rowLoc='left',
+             colLabels=None, colColours = None, colLoc = 'center',
+             loc='bottom', bbox=None)
+
+      函数实例化并返回一个matplotlib.table.Table 实例. 只有一种方式把表格添加到图表中, 这也是matplotlib 通常的情况. 可以直接访问这个对象对象的接口. 在用 add_table() 方法把图表添加到坐标轴实例之前, 可以用matplotlib.table.Table类直接对表格进行微调. 
+
+. 补充说明
+
+      如果直接创建一个matplotlib.table.Table 类的实例, 在把它添加到axes 实例前, 你可以有更多的控制. 可以使用 Axes.add_table(table)方法 把table 实例添加到axes, 这里的table 是 matplotlib.table.Table 类的实例.

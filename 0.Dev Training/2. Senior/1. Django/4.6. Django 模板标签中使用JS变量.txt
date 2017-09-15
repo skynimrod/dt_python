@@ -1,0 +1,102 @@
+. 比如动态获取 QuerySet 的部分数据.
+
+				    $(document).ready(function() {
+				    	  var pagenum = {{ pagenum }};
+				    	  alert(pagenum);
+				    	  
+				    	  length = {{ reportset|length }}
+				    	  var i = pagenum
+				    	  {% for report in reportset|slice:":4" %}
+				    	  //alert("{{ report.reportname}}");
+				    	  {% endfor%}
+				                
+				        alert("Hello Jquery from showall2");
+				        $("#adams").click( function() {
+				            alert("Hello, adams click");
+				            $("#adams").text("Hello");
+				            alert(length);
+				        });
+				    });   // end of jquery
+				</script>
+
+     上面的{%for%}循环部分, 如果slice的参数可以从js传递, 就可以动态处理其中的部分数据了, 这对于分开显示部分数据非常方便.
+
+     但是 Django 的模板机制是 预编译的时候其实是执行了标签内的语句, 也就是页面变成静态的了. 
+
+ ***    所以Django 模板标签中使不可能使用JS变量的.  ***
+
+. 转变实现方式
+
+  用AJAX方式, 在JS中将变量参数传递给后台, 后台根据参数来获取数据结果后再返回给页面. 变相实现了数据的定制获取. 
+
+http://blog.csdn.net/xluren/article/details/17525713
+
+   但是jquery 的load 似乎并没有执行view中的操作。。。奇怪, 也没有报js 出错。。
+
+ $("#adams").click( function() {
+				            alert("Hello, adams click");
+				            $("#adams").text("Hello");
+				            alert(length);
+				    	      $("#vtest").empty().load("{% url 'report:ajaxtest' %}",{pagenum:$pagenum});
+				    	      //$("#vtest").load("http://new.sina.com.cn");
+				    	      //$("#vtest").html("<p>just a test</p>");
+				    	      alert("end of click");
+				        });
+
+  主要是这一句
+
+   				    	      $("#vtest").empty().load("{% url 'report:ajaxtest' %}",{pagenum:$pagenum});
+
+
+  虽然执行了， 但是并没有真正调用 url 'report:ajaxtest'.  经过多次尝试, 发现删除参数后就调用了, 如下:
+
+   				    	      $("#vtest").empty().load("{% url 'report:ajaxtest' %}" );
+
+  如果添加了参数, 查看日至, 发现如下错误:
+
+ 2016-11-13 15:23:59,109 [Thread-53:22192] [django.request:158] [csrf:_reject] [WARNING]- Forbidden (CSRF token missing or incorrect.): /report/ajaxtest/
+2016-11-13 15:23:59,119 [Thread-53:22192] [django.server:131] [basehttp:log_message] [WARNING]- "POST /report/ajaxtest/ HTTP/1.1" 403 2494
+
+  查看Django 文档关于Ajax 中的csrf 问题解决:
+
+      https://docs.djangoproject.com/en/1.10/ref/csrf/
+
+      http://www.tuicool.com/articles/222yauZ
+
+      http://www.cnblogs.com/Johnny_Z/archive/2012/06/17/2552609.html
+
+需要注意的是用$.ajaxSetup函数所设置的默认值不会应用到load()命令上。
+
+http://stackoverflow.com/questions/15721250/django-jquery-csrf-403-error    用这个解决方案好。。。！！！*******************
+
+{% csrf_token %}  在 body 的任意位置添加, 然后下面获取csrftoekn, 然后再在post的时候添加该参数...
+
+var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();                    *********===================== 这一句获取上面定义的csrftoken
+
+                function csrfSafeMethod(method) {
+                    // these HTTP methods do not require CSRF protection
+                    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                }
+                $.ajaxSetup({
+                    beforeSend: function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    }
+                });				                
+
+
+=============================================================
+
+用  $.post() 来获取服务器的数据:
+
+				    	      $.post(
+				    	          "{% url 'report:ajaxtest' %}", 
+				    	          {pagenum:$pagenum, start:$start, end:$end, csrfmiddlewaretoken: csrfToken } ,
+				    	          function(data,status){
+                            //alert("Data: " + data + "\nStatus: " + status);
+                            $("#vtest").append(data);
+                            $start = $end;
+                            $end += $pagenum;
+                        }
+                    );

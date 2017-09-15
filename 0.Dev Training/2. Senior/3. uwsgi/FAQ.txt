@@ -1,0 +1,25 @@
+1. 在win7 下安装uwsgi 的时候出现下面的错误
+
+    99% |████████████████████████████████| 788kB
+    100% |████████████████████████████████| 798k
+B 48kB/s
+    Complete output from command python setup.py egg_info:
+    Traceback (most recent call last):
+      File "<string>", line 1, in <module>
+      File "C:\Users\my\AppData\Local\Temp\pip-build-ym42slyn\uwsgi\setup.py", l
+ine 3, in <module>
+        import uwsgiconfig as uc
+      File "C:\Users\my\AppData\Local\Temp\pip-build-ym42slyn\uwsgi\uwsgiconfig.
+py", line 8, in <module>
+        uwsgi_os = os.uname()[0]
+    AttributeError: 'module' object has no attribute 'uname'
+
+    ----------------------------------------
+
+  分析:
+
+       uwsgi并没有适合Windows的安装版本。
+
+os.uname()这个function在Windows版本中是没有的，所以Windows中uwsgi目前应该是无法安装的。
+
+Python（python3.4.3）的文档中明确说明os.uname()只适用于Unix，并不适用于Windows，想安装uwsgi还是使用Linux吧。

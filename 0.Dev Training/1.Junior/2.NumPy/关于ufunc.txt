@@ -1,0 +1,1 @@
+. ufunc 是 universal function 的缩写, 它是一种能对数组的每个元素进行运算的函数.  NumPy 内置的许多ufunc 函数都是C语言实现的, 因此它们的计算速度非常快.

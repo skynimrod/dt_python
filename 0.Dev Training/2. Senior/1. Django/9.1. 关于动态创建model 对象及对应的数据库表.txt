@@ -1,0 +1,51 @@
+. 一. 手工方式
+
+   1. SQL 语句在 MySQL 中创建 对应的表
+
+mysql> create table report_reportlist_2016_tbl like report_reportlisttbl;
+Query OK, 0 rows affected (0.34 sec)
+
+   2. model.py 中手工添加 对象
+
+class ReportList_2016_Tbl(models.Model):
+    stockcode   = models.CharField('股票代码',  max_length = 6, blank = False )
+    reporturl   = models.CharField('公告地址',  max_length = 255, blank = False, unique = True )
+    reportname  = models.CharField('公告名称',  max_length = 255, blank = False )
+
+    PDF     = 'pdf'
+    TXT     = 'txt'
+    HTML    = 'html'
+    REPORT_TYPE_CHOICES = ( (PDF, 'pdf file'), (TXT, 'txt file'), (HTML, 'html file'), )
+    reporttype  = models.CharField('公告类型',  max_length = 4, blank = False,
+                                   choices = REPORT_TYPE_CHOICES, default= PDF, )
+    
+    flag1       = models.CharField('待用' ,    max_length = 4, blank = False )
+    releaseddate = models.CharField('发布日期', max_length = 10, blank = False )
+    releasedtime = models.CharField('发布时间', max_length = 18, blank = False )
+
+  3. 注意
+
+    上面的对象和表都是基于 ReportListTbl 对象为模板的   
+
+. 二、自动方式
+
+# 下面是用数据对象来对数据持久化
+        reportTblName = "ReportList_"+rec["date"][:4]+"_Tbl"
+        print("reportTblName="+ reportTblName)
+        if ( reportTblName not in d2 or not d2[reportTblName] ):    # 如果该公告年份对应的表及数据对象不存在
+            # 创建数据对象及对应的数据库表,并修改d2 中的标识
+            #print("parseReportList():自身目录:"+os.path.dirname(__file__))
+            #print("parseReportList():目录:"+os.getcwd())
+            src = os.path.dirname(__file__)+"/models.py"
+            clsdefine = dupClassDefine( src,"ReportListTbl", reportTblName, "utf-8")
+            addClassDefine( src, reportTblName, clsdefine, "utf-8" )
+            sqlstr = "create table IF NOT EXISTS report_" + reportTblName + " like report_reportlisttbl"
+            print("+++++++++============================")
+            print("sqlstr=" + sqlstr)
+            execSQL( sqlstr )
+            # 下面是数据对象动态实例化, 然后存数据
+            di = __import__('report.reportlist.models',
+                            globals(),locals,["ReportListTbl",reportTblName])
+            c = getattr( di, reportTblName )
+            d2[reportTblName] = c()
+            print(d2[reportTblName])

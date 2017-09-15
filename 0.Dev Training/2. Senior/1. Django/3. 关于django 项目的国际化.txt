@@ -1,0 +1,33 @@
+参见:
+
+    http://blog.csdn.net/ybdesire/article/details/46806739
+
+    http://www.cnblogs.com/oubo/archive/2012/04/05/2433690.html
+
+    http://www.cnblogs.com/oubo/archive/2012/04/05/2433690.html
+
+. Python 3.4.2 本身就包含国际化的支持
+
+  参见: Python 3.4.2.chm -> 23. Internationalization
+
+  使用的是gettext 包
+
+. 1. django 有i18n 的支持吗?
+
+  有. 参见最上面的第二个url。
+
+     django包安装路径(通过pip show django查看)下的conf/global_settings.py 中有 LANGUATE_CODE 可用值得列表
+  
+    例如:
+
+        C:\Users\my\Envs\env3\Lib\site-packages\django\conf\global_settings.py  
+
+    文件中的LANGUATES 的值就是 可用的LANGUATE_CODE 的值的集合. 对于简体中文而言, 就是 zh-hans  即
+ 
+     LANGUAGE_CODE = 'zh-hans' #'en-us' #'zh-cn'    那么缺省的django 的包功能(admin)等就变成中文界面了.
+
+. 2. 时区设置
+
+TIME_ZONE =  'Asia/Shanghai' #'UTC'   # 'UTC+8' invalid
+
+    这就是北京时间

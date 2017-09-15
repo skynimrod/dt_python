@@ -1,0 +1,6 @@
+. 所有的文件访问默认的当前路径都是项目所在的路径.  所以即便是子目录不同, 如果没有路径信息, 那么系统认为就是访问项目所在路径下面的文件. 
+
+. os.path.dirname(__file__)) 表示当前执行文件所在的路径
+
+              #print("parseReportList():自身目录:"+os.path.dirname(__file__))
+            #print("parseReportList():目录:"+os.getcwd())

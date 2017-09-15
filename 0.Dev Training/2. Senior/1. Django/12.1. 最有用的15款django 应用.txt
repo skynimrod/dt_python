@@ -1,0 +1,101 @@
+参见:
+
+     http://www.tuicool.com/articles/Iviayi
+
+. 一、认证和授权
+
+   1. Python social auth
+
+      一款社交账号认证/注册机制，支持Django、Flask、Webpy等在内的多个开发框架，提供了约50多个服务商的授权认证支持，如Google、Twitter、新浪微博等站点，配置简单。
+
+      pip install python-social-auth
+
+   2. Django Guardian
+
+      Django默认没有提供对象（Object）级别的权限控制，我们可以通过该扩展来帮助Django实现对象级别的权限控制。
+
+      pip install django-guardian
+
+   3. Django OAuth Toolkit
+
+      可以帮助Django项目实现数据、逻辑的OAuth2功能，可与Django REST框架完美整合起来。
+
+      pip install django-oauth-toolkit
+
+   4. django-allauth
+
+      可用于账号注册、管理和第三方社交账号的认证。
+
+      pip install django-allauth
+
+. 二、后端
+
+   5. Celery
+
+      用来管理异步、分布式的消息作业队列，可用于生产系统来处理百万级别的任务。
+
+      pip install Celery
+
+   6. Django REST 框架
+
+      构建REST API的优秀框架，可管理内容协商、序列化、分页等，开发者可以在浏览器中浏览构建的API。
+
+      pip install djangorestframework
+
+   7. Django stored messages
+
+      可以很好地集成在Django的消息框架中（django.contrib.messages）并让用户决定会话过程中存储在数据库中的消息。
+
+   8. django-cors-headers
+
+      一款设置CORS（Cross-Origin Resource Sharing）标头的应用，基于XmlHttpRequest，对管理Django应用中的跨域请求非常有帮助。
+
+      pip install django-cors-headers
+
+. 三、调试
+
+   9. Debug toolbar
+
+      可在设置面板显示当前请求/响应的各种调试信息。除了本身提供的操作面板外，还有来自社区的多个第三方面板。
+
+      pip install django-debug-toolbar
+
+. 四、静态资源
+
+  10. Django Storages
+
+      可使静态资源方便地存储在外部服务上。安装后只需运行“python manage.py collectstatic”命令就可以将全部改动的静态文件复制到选定的后端。可结合库“python-boto”一起使用，将静态文件存储到Amazon S3上。
+
+      pip install django-storages
+
+  11. Django Pipeline
+
+      静态资源管理应用，支持连接和压缩CSS/Javascript文件、支持CSS和Javascript的多种编译器、内嵌JavaScript模板，可充分允许自定义。
+ 
+      pip install django-pipeline
+
+  12. Django Compressor
+
+      可将页面中链接的以及直接编写的JavaScript和CSS打包到一个单一的缓存文件中，以减少页面对服务器的请求数，加快页面的加载速度。
+
+      pip install django_compressor
+
+. 五、 工具
+
+  13. Reversion
+
+      为模型提供版本控制功能，稍微配置后，就可以恢复已经删除的模型或回滚到模型历史中的任何一点。最新版本支持Django 1.6。
+
+      pip install django-reversion
+
+  14. Django extensions
+
+      Django框架的扩展功能集合，包括management命令扩展、数据库字段扩展、admin后台扩展等。
+
+      pip install django-extensions
+
+  15. Django braces
+
+      是一系列可复用的行为、视图模型、表格和其他组件的合集。
+
+      pip install django-braces

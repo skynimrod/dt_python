@@ -1,0 +1,38 @@
+如果仅仅 import pylab, 那么执行 axis() 就会提示如下错误:
+
+>>> import pylab
+>>> axis()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'axis' is not defined
+
+但是如果 from pylab import *, 那么执行axis() 就正确
+
+>>> from pylab import *
+>>> axis()
+(0.0, 1.0, 0.0, 1.0)
+>>>
+
+分别表示的是 xmin, xmax, ymin 和 ymax.  
+
+同样, 可以设置x轴和y轴的值
+
+>>> l = [-1, 1, -10, 10]
+>>> axis(l)
+[-1, 1, -10, 10]
+
+如果不是用axis() 或者其他参数设置, matplotlib 会自动使用最小值, 刚好可以让我们在一个图中看到所有的数据点.  如果设置axis() 的范围比数据集合中的最大值小, matplotlib 按照设置执行, 这样就无法在途中看到所有的数据点. 这可能会引起困惑甚至是错误, 因为我们会认为我们看到了绘制的所有东西. 避免这种情况发生的一种方法是调用autoscale()(matplotlib.pyplot.autoscale()) 方法, 该方法会计算坐标轴的最佳大小以适应数据的显示。
+
+    如果想向相同图形中添加新的坐标轴, 可以调用 matplotlib.pyplot.axex()方法(???不是axis()??). 我们通常会在方法中 传入一些属性, 例如 rect, 归一化单位(0,1)下的left、bottom， width、height 四个属性, 或者 axisbg, 该参数指定坐标轴的背景颜色.
+
+    还有其他一些参数允许我们对新添加的坐标轴进行设置, 例如 sharex/sharey 参数, 接收其他坐标轴的值 并让当前坐标轴(x/y) 共享相同的值; 或者 polar 参数, 指定是否使用极 坐标轴( polar axes)
+
+    添加新坐标轴是有用的, 例如， 如果需要几个不同的视图来表达相同的数据的不同属性值, 这就需要在一张图中组合显示多个图表.
+
+    如果只想对当前图形添加一条线, 可以调用 matplotlib.pyplot.axhline() 或者 matplotlib.pyplot.axvline().  axhline() 和 axvline() 方法会根据给定的x和y 值 相应的绘制出 相对于最表轴的水平线和垂直线. 这两个方法的参数很相似, axhline() 方法比较重要的参数是y方向位置、xmin 和 xmax, axvline() 方法比较重要的参数是 x向位置、ymin 和 ymax.
+
+    如果调用axhline() 或 axvline() 方法时没有传入参数, 就会使用默认值. axhline() 方法绘制了一条y = 0 的水平线, axvline() 方法绘制了一条 x = 0 的垂直线. 
+
+    类似的，另外两个相关的方法允许我们添加一个跨坐标轴的水平带(矩形)， 它们是 matplotlib.pyplot.axhspan() 和 matplotlib.pyplot.axvspan().  axhspan() 方法必须的ymin 和 ymax 参数指定了水平带的宽度. axvspan() 方法必须的xmin和xmax 参数指定了垂直带的宽度.
+
+.

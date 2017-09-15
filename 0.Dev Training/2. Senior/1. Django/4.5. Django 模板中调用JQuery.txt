@@ -1,0 +1,24 @@
+参见:  
+
+     http://www.ibm.com/developerworks/cn/web/wa-django/   利用 Django 与 jQuery 来创建电子表格应用程序
+
+. 1. JQuery 调用没有反应。。。
+
+     		    <script language="javascript" type="text/javascript" src="report/js/jquery-1.11.3.js"></script>
+
+
+     改为:
+
+        <script src="http://code.jquery.com/jquery.js"></script>
+
+
+     问题解决了.
+
+     实际上 查看页面源码的时候, 打开 
+ 
+           <script language="javascript" type="text/javascript" src="report/js/jquery-1.11.3.js"></script>
+
+
+     对应的js文件, 就出现提示找不到该js.  Page not found at /report/showall/report/js/jquery-1.11.3.js
+
+     关键原因是 js 的路径问题. 

@@ -1,0 +1,29 @@
+. 1. 方法调用提示参数数量不正确
+
+  Traceback (most recent call last):
+  File "pdf_tools.py", line 1208, in decode
+    retbuf += self.processBDC( tmpbuf, streambuf, cmap, cur_xy, textMap, cellMap, tm )
+TypeError: processBDC() takes 7 positional arguments but 8 were given
+
+
+   这种错误一般是类方法定义的参数里面缺少了 self 参数.
+
+. 2. UnicodeEncodeError: 'gbk' codec can't encode character '\uf052' in position 16: illegal multibyte sequence
+
+   这个是因为 print() 本身的局限, 无法打印 utf-8  \0f052. 参见:
+
+   http://www.cnblogs.com/feng18/p/5646925.html
+
+   F052 对应的是一个小方框, 里面有个钩选的对号. 很多公告文件里面都有这个. 这个符号在txt文件中也无法显示, 应该提前进行替代. 
+
+   如何显示在Python中的特殊字符打印?
+
+   http://codego.net/556839/
+
+   http://blog.csdn.net/xuhuan_wh/article/details/8533675  勾号、叉号、圈号的收集  
+
+   http://www.haorooms.com/post/html_tsfh
+
+   http://892848153.iteye.com/blog/1743322
+
+. 

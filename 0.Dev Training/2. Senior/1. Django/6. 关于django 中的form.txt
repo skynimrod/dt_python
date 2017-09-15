@@ -1,0 +1,65 @@
+参见:
+
+    https://docs.djangoproject.com/en/1.10/intro/tutorial04/
+
+. 修改模板中 app1/detail.html 中内容,添加 form 的部分
+
+polls/templates/polls/detail.html
+
+<h1>{{ question.question_text }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'app1:vote' question.id %}" method="post">
+{% csrf_token %}
+{% for choice in question.choice_set.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+{% endfor %}
+<input type="submit" value="Vote" />
+</form>
+
+
+修改 app1/views.py 中 vote 部分的内容,来进行一些实际的处理
+
+app1/views.py
+
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
+
+from .models import Choice, Question
+# ...
+def vote(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # Redisplay the question voting form.
+        return render(request, 'app1/detail.html', {
+            'question': question,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('app1:results', args=(question.id,)))
+
+. 上面的代码中
+
+  1. request.POST  是一个类字典对象(类map), 可以通过key 来访问数据， 例如: request.POST['choice']
+ 
+     所有返回的值都是字符串
+
+     虽然也可以通过request.Get 来访问, 但是为了保证一致, 在这儿只用request.POST
+
+  2. 如果 key对应的数据没有的话, request.POST['choice'] 会 raise KeyError异常
+
+  3. 处理完POST数据后, 一般通过HttpResponseRedirect来返回重定向.
+
+  4. 在HttpResponseRedirect中使用reverse() 函数, 是为了避免hardcode. reverse() 调用会返回一个类似如下的字符串:
+
+      '/app1/3/results/'   3 就是question_id

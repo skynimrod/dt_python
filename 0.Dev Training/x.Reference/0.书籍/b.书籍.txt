@@ -1,0 +1,29 @@
+
+. 0. Python 参考文档
+
+   http://python.org/doc/ref/
+
+. 1. 《Python 基础教程》   [挪]Magnus Lie Hetland        司维  曾军巍 谭颖华
+
+     国图   ZWTS 2014 TP311.56 htl
+
+. 2. Python 科学计算        张若愚
+
+     国图    ZWTS 2016  Tp311.56 zry
+
+. 3. Python 与数据科学       王仁武     ZWTS 2016 TP311.56 wrw
+
+. 4. Python 网络数据采集     [美]Ryan Mitchell 著   陶俊杰 陈小莉 译
+
+. 5. Python 数据可视化编程实战     [爱尔兰]Igor Milovanovic 著  颛清山 译   ZWTS 2015 TP311.5 mil
+
+. 6. Python 项目开发实战  [美]Laura Cassell , Alan Gauld  著  高弘扬， 卫莹  译   ZWTS 2016 TP311.5 cas
+
+.* 7. NumPy 攻略(Python科学计算与数据分析)     ---- 推荐
+
+   [印尼] Ivan Idris 著  张崇明 译   ZWTS 2014 TP311.56 idr
+
+ 
+
+     
+

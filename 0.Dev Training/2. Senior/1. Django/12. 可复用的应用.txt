@@ -1,0 +1,265 @@
+参见:
+
+    https://docs.djangoproject.com/en/1.10/intro/reusable-apps/
+
+    https://packaging.python.org/distributing/
+
+    https://djangopackages.org/        可复用的官方应用, 非常好的
+
+. 可复用是Python 的生命之本. PyPi ( The Python Package Index) 有大量的可用于你自己的Python程序中的包.  https://www.djangopackages.com/ 可以选出很多用于你自己项目中的应用. 如同Django 也是一个可用于项目中的包一样.
+
+. Package? App?
+
+  一个目录到一个Package,必须包含一个特定文件 __init__.py. 即使这个文件是空的.
+
+. 之前的测试项目MySite的目录结构如下:
+
+mysite/
+    manage.py
+    mysite/
+        __init__.py
+        settings.py
+        urls.py
+        wsgi.py
+    polls/
+        __init__.py
+        admin.py
+        migrations/
+            __init__.py
+            0001_initial.py
+        models.py
+        static/
+            polls/
+                images/
+                    background.gif
+                style.css
+        templates/
+            polls/
+                detail.html
+                index.html
+                results.html
+        tests.py
+        urls.py
+        views.py
+    templates/
+        admin/
+            base_site.html
+
+   其中 polls 目录现在就可以拷贝到其他Django项目中, 并且立即可复用. 当然, 我们需要把它先打包,以便它在其他项目中易于安装. 
+
+. 一. 安装一些准备  prerequisites
+
+    setuptools    这个之前已经安装
+
+. 二. 打包polls
+
+    1. 首先为polls创建一个父目录, 在你的Django 项目外面, 例如:django-polls 目录   (尽量用django-前缀, 方便识别是基于django 的应用)
+
+    2. 把polls 拷贝到django-polls 目录下
+
+    3. 创建 django-polls/README.rst 文件, 内容如下:
+
+-------------------------------------------------------------
+
+django-polls/README.rst
+
+=====
+Polls
+=====
+
+Polls is a simple Django app to conduct Web-based polls. For each
+question, visitors can choose between a fixed number of answers.
+
+Detailed documentation is in the "docs" directory.
+
+Quick start
+-----------
+
+1. Add "polls" to your INSTALLED_APPS setting like this::
+
+    INSTALLED_APPS = [
+        ...
+        'polls',
+    ]
+
+2. Include the polls URLconf in your project urls.py like this::
+
+    url(r'^polls/', include('polls.urls')),
+
+3. Run `python manage.py migrate` to create the polls models.
+
+4. Start the development server and visit http://127.0.0.1:8000/admin/
+   to create a poll (you'll need the Admin app enabled).
+
+5. Visit http://127.0.0.1:8000/polls/ to participate in the poll.
+
+--------------------------------------------------------------------
+
+  4. 创建django-polls/LICENSE文件. ...
+
+  5. 创建一个setup.py 文件. 提供如何构建和安装这个app的细节. 内容如下:
+
+django-polls/setup.py
+
+import os
+from setuptools import find_packages, setup
+
+with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
+    README = readme.read()
+
+# allow setup.py to be run from any path
+os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+
+setup(
+    name='django-polls',
+    version='0.1',
+    packages=find_packages(),
+    include_package_data=True,
+    license='BSD License',  # example license
+    description='A simple Django app to conduct Web-based polls.',
+    long_description=README,
+    url='https://www.example.com/',
+    author='Your Name',
+    author_email='yourname@example.com',
+    classifiers=[
+        'Environment :: Web Environment',
+        'Framework :: Django',
+        'Framework :: Django :: X.Y',  # replace "X.Y" as appropriate
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',  # example license
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        # Replace these appropriately if you are stuck on Python 2.
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Topic :: Internet :: WWW/HTTP',
+        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+    ],
+)
+
+  6. 只有Python 模块和包会缺省包含到包里。 要包含更多的文件, 需要创建 MANIFEST.in 文件来描述.  如下:
+
+django-polls/MANIFEST.in
+
+include LICENSE
+include README.rst
+recursive-include polls/static *
+recursive-include polls/templates *
+
+  7. 推荐可选的.  就是把有关app的详细文档也包含进去. 创建一个空目录为防止未来的文档  django-polls/docs.  在MANIFEST.in 中添加如下内容
+
+recursive-include docs *
+
+     注意, 只有docs 目录内有文件才会被打包进去。 很多Django 应用也通过 https://readthedocs.org/ 来提供文档.
+
+  8. 用 python setup sdist (在django-polls目录里面)命令来构建你的包.  会创建一个dist 目录, 并构建一个你的新包 django-polls-0.1.tar.gz
+
+  更多关于package的信息 参见:  https://packaging.python.org/distributing/
+
+    这个命令是在开发环境下运行的.  如果不在开发环境下运行, 产生的文件是 django-polls-0.1.0.1.zip
+
+. 装载 应用
+
+(env2) F:\F_3_test\3_Python>pip install --user django-polls-0.1.0.1.tar.gz
+Can not perform a '--user' install. User site-packages are not visible in this virtualenv.
+
+(env2) F:\F_3_test\3_Python>deactivate
+
+F:\F_3_test\3_Python>cd mysite
+
+F:\F_3_test\3_Python\mysite>pip install --user ../django-polls/dist/django-polls
+-0.1.0.1.tar.gz
+Unpacking f:\f_3_test\3_python\django-polls\dist\django-polls-0.1.0.1.tar.gz
+  Running setup.py (path:C:\Users\my\AppData\Local\Temp\pip-4bp45qkk-build\setup
+.py) egg_info for package from file:///F:/F_3_test/3_Python/django-polls/dist/dj
+ango-polls-0.1.0.1.tar.gz
+
+    warning: no files found matching 'LICENSE'
+Installing collected packages: django-polls
+  Running setup.py install for django-polls
+
+    warning: no files found matching 'LICENSE'
+Successfully installed django-polls
+Cleaning up...
+
+F:\F_3_test\3_Python\mysite>pip list
+django-polls (0.1.0.1)
+mysql-connector-python (2.1.3)
+pbr (1.10.0)
+pip (1.5.6)
+PyYAML (3.12)
+setuptools (2.1)
+six (1.10.0)
+stevedore (1.17.1)
+virtualenv (15.0.3)
+virtualenv-clone (0.2.6)
+virtualenvwrapper-win (1.2.1)
+
+
+F:\F_3_test\3_Python\mysite>manage.py runserver
+
+奇怪, 为什么必须要脱离开发环境才可以 用pip install --user  安装polls应用？？
+
+    无论zip文件，还是 tar.gz文件, 都可以在脱离virtualEnv 后安装, 但是一旦进入virtualenv 的一个开发环境, 就会提示安装不了, 
+
+Can not perform a '--user' install. User site-packages are not visible in this virtualenv.
+
+   用户的site-packages 在这个开发环境中不可见？？？
+
+
+https://pip.pypa.io/en/stable/reference/pip_install/#finding-packages
+
+--user
+
+    Install to the Python user install directory for your platform. Typically ~/.local/, or %APPDATA%Python on Windows. (See the Python documentation for site.USER_BASE for full details.)
+
+
+在开发环境下，就不应该用 --user 参数，即不能指定用户, 可能是开发环境无法区分用户吧
+
+(env2) F:\F_3_test\3_Python>pip install ./django-polls-0.1.0.1.zip
+Processing f:\f_3_test\3_python\django-polls-0.1.0.1.zip
+Building wheels for collected packages: django-polls
+  Running setup.py bdist_wheel for django-polls ... done
+  Stored in directory: C:\Users\my\AppData\Local\pip\Cache\wheels\c7\38\da\11c9c
+028559e501b4f1485d7fdecdd175210d8f606761ea3cd
+Successfully built django-polls
+Installing collected packages: django-polls
+Successfully installed django-polls-0.1.0.1
+
+(env2) F:\F_3_test\3_Python>
+(env2) F:\F_3_test\3_Python>pip list
+cycler (0.10.0)
+Django (1.10.1)
+django-bootstrap-toolkit (2.15.0)
+django-polls (0.1.0.1)
+matplotlib (1.5.3)
+mpmath (0.19)
+numpy (1.11.1)
+pip (8.1.2)
+PyMySQL (0.7.9)
+pyparsing (2.1.9)
+python-dateutil (2.5.3)
+pytz (2016.6.1)
+scipy (0.18.1)
+setuptools (28.0.0)
+six (1.10.0)
+sympy (1.0)
+wheel (0.30.0a0)
+
+(env2) F:\F_3_test\3_Python>
+
+现在进入mysite , 不进行任何修改(polls 子目录已经被移出了), 即可运行应用
+
+(env2) F:\F_3_test\3_Python\mysite>manage.py runserver
+Performing system checks...
+
+System check identified no issues (0 silenced).
+October 12, 2016 - 15:51:41
+Django version 1.10.1, using settings 'mysite.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+
+
+ 

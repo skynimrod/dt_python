@@ -1,0 +1,17 @@
+. >>> x = {}
+  >>> x[42] = 'Foobar'
+
+  >>> x
+  {42:'Foobar'}
+
+. 1. 清空map 中的所有内容
+
+   clear()
+
+  >>> returned_value = x.clear()
+  >>> d
+  {}
+  >>> returned_value
+  None
+
+. 2. copy()    复制map 中的相同简直对的新map

@@ -1,0 +1,209 @@
+参见:
+
+     http://www.celeryproject.org/
+
+     http://docs.jinkan.org/docs/celery/      打不开了...
+
+     http://shineforever.blog.51cto.com/1429204/1737323/
+
+     http://www.mamicode.com/info-detail-986285.html
+
+     https://zhidao.baidu.com/question/1642460416677386340.html
+
+     http://docs.celeryproject.org/en/latest/
+
+     http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html#first-steps
+
+     http://docs.celeryproject.org/en/latest/userguide/index.html#guide       User Guide
+
+     http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html    Django 使用Celery的步骤
+
+     https://github.com/celery/celery/tree/master/examples/django/        Django 中使用Celery的例子的完整代码
+
+     http://www.xuan6.com/jiaoyu/2016/0916/363357.html   很好的一个介绍celery的中文文章
+
+     http://docs.jinkan.org/docs/celery/history/index.html     Celery 3.1 的文档   这个非常好, 官网已经找不到旧版本的文档了.
+
+     http://www.weiguda.com/blog/73/       很好的一个介绍celery的中文文章
+
+     http://python.jobbole.com/81953/  -- 定时任务
+
+     http://docs.celeryproject.org/en/latest/genindex.html     Celery 的所有文档索引
+
+     https://www.digitalocean.com/    云开发平台
+
+. Celery 是一个简单、灵活且可靠的,处理大量消息的分布式系统, 并且提供维护这样一个系统的必须工具. 它是一个专注实时处理的任务队列, 同时也支持任务调度.
+
+. 1. 安装
+
+     pip install celery
+
+     安装过程中, 会自动把celery 需要的其他包也安装好, 比如: kombu, billard, amqp,等等.
+
+. 2. 测试是否安装好
+ 
+     安装完成后, 就可以在命令行下面直接执行 celery, 会返回 celery 的相关帮助信息.
+
+. 3. 然后安装  RabbitMQ (ErLang)
+
+     参见 消息中间件 RabbitMQ 部分
+
+. 4. 然后写一个测试任务代码 tasks.py
+
+from celery import Celery
+
+app = Celery('tasks', broker='amqp://guest@localhost//')
+
+@app.task
+def add(x,y):
+    return x+y
+
+. 5. 在Celery 运行任务
+
+(env3) F:\F_3_test\3_Python\mysite2\tasks>celery -A tasks worker --loglevel=info
+
+. 6. 任务被启动的话, RabbitMQ 监控界面可以看到.
+
+   这个时候任务仅仅是已经注册了, 需要调用才可以启动.
+ 
+  call_tasks.py
+
+  --------
+
+from tasks import add
+
+add.delay(4,4)
+
+
+ 这时候 启动celery tasks worker 的终端界面和 RabbitMQ 页面都会显示任务延时被调用的信息.
+
+. 7. Celery 在Django 中的配置
+
+  7.1 安装 Django-celery
+
+      pip install django-celery
+
+  7.2 在settings文件中配置celery： 
+
+# CELERY STUFF
+import djcelery
+djcelery.setup_loader()
+
+BROKER_URL = 'amqp://localhost//'   # RabbitMQ, 如果是redis, 则为: 'redis://localhost:6379'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DataBaseScheduler'    # 定时任务
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'   # 这儿是REDIS???
+CELERY_ACCEP_COMTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Shanghai'
+
+  
+INSTALLED_APPS = [
+#    'polls.apps.PollsConfig',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'guardian',
+    'polls',
+    'core',
+    'utils',
+    'report',
+    'djcelery',
+]
+
+  7.3 修改 位于settings.py 同级目录中的文件__init__.py
+
+# -*- coding: utf-8  -*-
+
+from __future__ import absolute_import
+
+# This will make sure the app is always imported when
+# Django starts so that share_task will use this app.
+from .celery import app as celery_app
+
+
+
+     然后修改市区：
+
+TIME_ZONE = 'Asia/Shanghai'
+
+ 市区不对，计划任务是不会按时间执行的！
+
+  7.4 还需要创建一个celery.py 文件, 它会自动发现app 下面的task!
+ 
+# -*-  coding: utf-8  -*-
+
+from __future__ import absolute_import
+
+import os
+from celery import Celery
+from django.conf import settings
+
+# set the default Django settings module for the 'celery' program.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite2.settings')
+app = Celery('mysite2')
+
+# Using a string here means the worker will not have to
+# pickle the object when using Windows
+app.config_from_object('django.conf:settings')
+app.autodiscover_tasks( lambda: setting.INSTALLED_APPS )
+
+@app.task(bind=True)
+def debug_task(self):
+    print('Request:{0!r}'.format(self.request) )
+
+
+  7.5 下面在应用report  下面创建 测试用的 task!
+
+======================
+
+. celerybeat  被celery beat  命令替代了. 
+
+. (env3) F:\F_3_test\3_Python\mysite2>celery help
+
+    可以查看celery 的所有可用的命令
+
+celery -A report worker --loglevel=info
+
+.  https://github.com/celery/celery/tree/master/examples/django/  
+
+  Githum 用户密码  用xinren_2002@yahoo.com  已经注册了  skydefence
+
+  F:\F_3_test\4_GIT>git clone https://github.com/skydefence/celery.git
+
+. ==========================
+
+. [2016-11-23 13:38:59,593: CRITICAL/MainProcess] Unrecoverable error: PicklingError("Can't pickle <class 'billiard.pool.Pool.__init__.<locals>.Process'>: attribute lookup Process on billiard.pool failed",)
+      
+  上面的错误是celery 4.0 启动任务的时候才会出错.  celery 3.1.24 版本则不会出错. 可能是4.0 的一些变动.
+
+  Celery 4.0 已经不支持Windows 平台了,  参见: http://docs.celeryproject.org/en/latest/faq.html 的最后一个问题.
+
+.=================
+  Celery 包含如下组件:
+
+  1. Celery Beat:
+
+     任务调度器, Beat进程会读取配置文件的内容, 周期性的将配置中到期需要执行的任务发送给任务队列.
+
+  2. Celery Worker: 执行任务的消费者, 通常会在多台服务器运行多个消费者来提高执行效率.
+
+(env3) F:\F_3_test\3_Python\tasktest\demoapp>celery -A tasks control rate_limit
+tasks.add 10/m
+-> celery@Adams: OK
+        new rate limit set successfully
+
+    设置worker 执行限制. 比如10/m , 一分钟最多10次, 也就是最快也是6秒1次.
+
+  3. Broker: 消息代理, 或者叫做消息中间件, 接受任务生产者发送过来的任务消息, 存进队列再按序分发给任务消费者(通常是消息队列或者数据库)
+ 
+  4. Producer: 调用了Celery提供的API、寒暑或者装饰器而产生任务并交给任务队列处理的都是任务生产者.
+
+  5. Result Backend: 任务处理完成后保存状态信息和结果, 以供查询. Celery 默认已支持Redis、RabbitMQ、MongoDB、Django ORM、SQLAlchemy等方式.
+
+.  主程序: celery.py
+from __future__ import absolute_import”是拒绝隐式引入，因为celery.py的名字和celery的包名冲突，需要使用这条语句让程序正确地运行。

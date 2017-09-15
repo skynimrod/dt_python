@@ -1,0 +1,7 @@
+参见:
+
+    http://blog.csdn.net/jw72jw/article/details/7404255
+
+. 1为标准输出stdout、2为标准错误stderr
+
+  统默认%值是1，也就是“1>”，而1>可以简写为>，也就是默认为>

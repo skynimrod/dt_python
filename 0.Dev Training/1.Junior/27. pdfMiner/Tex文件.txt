@@ -1,0 +1,11 @@
+. 参见:
+
+      http://baike.baidu.com/link?url=Ue0FiGmE9-LLw7T0O90dYrTbJCPazo1Dwhpqhyewit5jQh_ItdjI5SAzpMqCe_xIws9k4gGLQXCUS1mV6qf9na
+
+. 基于宏的流行的文本格式化程序 （它是包括LaTeX和teTeX在内的其它此类格式化程序的基础）
+
+. TeX提供了一套功能强大并且十分灵活的排版语言，它多达900多条指令，并且TeX有宏功能，用户可以不断地定义自己适用的新命令来扩展TeX系统的功能。许多人利用TeX提供的宏定义功能对TeX进行了二次开发，其中比较著名的有美国数学学会推荐的非常适合于数学家使用的AMS-TeX以及适合于一般文章、报告、书籍的LaTeX系统。
+
+  TeX系统是公认的数学公式排得最好的系统。美国数学学会（AMS）鼓励数学家们使用TeX系统向它的期刊投稿。世界上许多一流的出版社如 Kluwer、Addison-Wesley、牛津大学出版社等也利用TeX系统出版书籍和期刊。
+
+  大部分的TeX系统都是免费的。Knuth教授还公开了他的全部源程序。TeX系统已经在数百种计算机系统上得到实现。TeX系统的排版结果DVI（DeVice Independent）文件与输出设备无关。DVI 文件可以显示、打印、照排，几乎可以在所有的输出设备上输出。TeX排版源文件及结果在各种计算机系统上互相兼容。

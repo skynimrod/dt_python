@@ -1,0 +1,15 @@
+. 参见:
+
+      http://www.cnblogs.com/fnng/p/5268633.html
+
+. 1. 下载安装 Nginx
+
+     参见  Nginx 以及PHP 中与Nginx  结合使用的部分. 很简单, 下载解压运行Nginx.exe即可
+
+. 2. 安装uwsgi
+
+     pip install uwsgi
+
+     参见 uwsgi 部分. windows 下安装不了uwsgi....
+
+     

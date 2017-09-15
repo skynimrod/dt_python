@@ -1,0 +1,16 @@
+参见:
+
+     http://www.tuicool.com/articles/zmEV7n
+
+     http://www.tuicool.com/articles/qMjAve
+
+     http://supervisord.org/installing.html  。
+
+
+. Supervisor  3.3.1
+
+  仅仅测试完可以运行在Linux(Ubuntu 9.10), Max OS X(10.4/10.5/10.6), Solaris(10 for intel) 和FreeBSD 6.1. 能在大部分UNIX系统正常工作.
+
+  Supervisor 不能在任何版本的Windows下运行.
+
+  可以在Python 2.4 + 运行, 但是不能在Python3 下的任何版本运行.

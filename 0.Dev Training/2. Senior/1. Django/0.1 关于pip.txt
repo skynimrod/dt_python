@@ -1,0 +1,41 @@
+. 1. 察看系统里过期的python库
+
+     pip list --outdated
+
+. 2 更新过期库
+
+    pip install --update 库名
+
+    在stackoverflow上有人提供了批量更新的办法，一个循环就搞定（注意--upgrade后面的空格）
+	
+import pip
+from subprocess import call
+
+. 3. 删除库
+
+    pip uninstall 库名
+ 
+for dist in pip.get_installed_distributions():
+    call("pip install --upgrade " + dist.project_name, shell=True)
+
+   celery-4.-.--py2.py3-none-any.whl
+
+   kombu-4.0.0-py2.py3-none-any.whl
+
+   pytz-2016.7-py2.py3-none-any.whl
+
+   billiard-3.5.0.2-cp34-none-win_amd64.whl   ---- 升级这个的时候失败了。。。 pip 升级到9.0.1 后就成功了
+
+   提示升级pip
+
+   pip install --upgrade pip    （  8.1.2-> 9.0.1)
+
+   ---
+ 
+   amqp-2.1.1-py2.py3-none-any.whl
+
+   vine-1.1.3-py2.py3-none-any.whl
+
+   升级成功后, 会自动把版本低的同名库卸载.(uninstall)
+
+   

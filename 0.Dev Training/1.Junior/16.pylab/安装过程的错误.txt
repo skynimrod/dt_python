@@ -1,0 +1,97 @@
+E:\t_tmp\test>pip install pylab
+Collecting pylab
+  Using cached pylab-0.1.3-py2.py3-none-any.whl
+Collecting ipython (from pylab)
+  Using cached ipython-5.0.0-py2.py3-none-any.whl
+Collecting seaborn (from pylab)
+  Using cached seaborn-0.7.1.tar.gz
+Requirement already satisfied (use --upgrade to upgrade): sympy in c:\python27\l
+ib\site-packages (from pylab)
+Requirement already satisfied (use --upgrade to upgrade): numpy in c:\python27\l
+ib\site-packages (from pylab)
+Collecting pyzmq (from pylab)
+  Using cached pyzmq-15.3.0+fix-cp27-cp27m-win32.whl
+Collecting pandas (from pylab)
+  Using cached pandas-0.18.1-cp27-cp27m-win32.whl
+Collecting jinja2 (from pylab)
+  Using cached Jinja2-2.8-py2.py3-none-any.whl
+Requirement already satisfied (use --upgrade to upgrade): pytz in c:\python27\li
+b\site-packages (from pylab)
+Collecting networkx (from pylab)
+  Using cached networkx-1.11-py2.py3-none-any.whl
+Collecting jsonschema (from pylab)
+  Using cached jsonschema-2.5.1-py2.py3-none-any.whl
+Collecting tornado (from pylab)
+Collecting scikit-learn (from pylab)
+  Using cached scikit_learn-0.17.1-cp27-cp27m-win32.whl
+Requirement already satisfied (use --upgrade to upgrade): matplotlib in c:\pytho
+n27\lib\site-packages (from pylab)
+Collecting scikit-image (from pylab)
+  Using cached scikit-image-0.12.3.tar.gz
+    Complete output from command python setup.py egg_info:
+    Traceback (most recent call last):
+      File "<string>", line 1, in <module>
+      File "c:\docume~1\admini~1\locals~1\temp\pip-build-itu0j9\scikit-image\set
+up.py", line 146, in <module>
+        **extra
+      File "c:\python27\lib\site-packages\numpy\distutils\core.py", line 126, in
+ setup
+        dist = setup(**new_attr)
+      File "c:\python27\lib\site-packages\numpy\distutils\core.py", line 169, in
+ setup
+        return old_setup(**new_attr)
+      File "c:\python27\lib\distutils\core.py", line 111, in setup
+        _setup_distribution = dist = klass(attrs)
+      File "c:\python27\lib\site-packages\numpy\distutils\numpy_distribution.py"
+, line 16, in __init__
+        Distribution.__init__(self, attrs)
+      File "c:\python27\lib\site-packages\setuptools\dist.py", line 269, in __in
+it__
+        self.fetch_build_eggs(attrs['setup_requires'])
+      File "c:\python27\lib\site-packages\setuptools\dist.py", line 313, in fetc
+h_build_eggs
+        replace_conflicting=True,
+      File "c:\python27\lib\site-packages\pkg_resources\__init__.py", line 826,
+in resolve
+        dist = best[req.key] = env.best_match(req, ws, installer)
+      File "c:\python27\lib\site-packages\pkg_resources\__init__.py", line 1092,
+ in best_match
+        return self.obtain(req, installer)
+      File "c:\python27\lib\site-packages\pkg_resources\__init__.py", line 1104,
+ in obtain
+        return installer(requirement)
+      File "c:\python27\lib\site-packages\setuptools\dist.py", line 380, in fetc
+h_build_egg
+        return cmd.easy_install(req)
+      File "c:\python27\lib\site-packages\setuptools\command\easy_install.py", l
+ine 628, in easy_install
+        not self.always_copy, self.local_index
+      File "c:\python27\lib\site-packages\setuptools\package_index.py", line 604
+, in fetch_distribution
+        self.find_packages(requirement)
+      File "c:\python27\lib\site-packages\setuptools\package_index.py", line 441
+, in find_packages
+        self.scan_url(self.index_url + requirement.unsafe_name+'/')
+      File "c:\python27\lib\site-packages\setuptools\package_index.py", line 775
+, in scan_url
+        self.process_url(url, True)
+      File "c:\python27\lib\site-packages\setuptools\package_index.py", line 316
+, in process_url
+        page = f.read()
+      File "c:\python27\lib\socket.py", line 355, in read
+        data = self._sock.recv(rbufsize)
+      File "c:\python27\lib\httplib.py", line 612, in read
+        s = self.fp.read(amt)
+      File "c:\python27\lib\socket.py", line 384, in read
+        data = self._sock.recv(left)
+      File "c:\python27\lib\ssl.py", line 756, in recv
+        return self.read(buflen)
+      File "c:\python27\lib\ssl.py", line 643, in read
+        v = self._sslobj.read(len)
+    ssl.SSLError: ('The read operation timed out',)
+
+    ----------------------------------------
+Command "python setup.py egg_info" failed with error code 1 in c:\docume~1\admin
+i~1\locals~1\temp\pip-build-itu0j9\scikit-image\
+
+E:\t_tmp\test>

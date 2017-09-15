@@ -1,0 +1,16 @@
+. 使用 exec和 eval执行和求值字符串
+
+. 执行一个字符串的语句是exec   # 在Python 3.0 中, exec 是一个函数而不是语句
+
+  >>> exec "println 'hello world!'"
+  hello world!
+
+  使用命名空间
+
+  >>> from math import sqrt
+  >>> scope = {}
+  >>> exec 'sqrt = 1' in scope
+  >>> sqrt(4)
+  2.0
+  >>> scope['sqrt']
+  1

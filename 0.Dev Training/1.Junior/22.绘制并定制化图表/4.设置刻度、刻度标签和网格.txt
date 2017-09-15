@@ -1,0 +1,28 @@
+. 我们先了解下图形(figure) 和子区(subplots)
+
+  在matplotlib 中, 调用 figure() 会显示的创建一个图形, 表示一个图形用户界面窗口. 通过调用plot()或类似的方法会隐式的创建图形. 这对于简单的哦图形没有问题, 但是对于更高级的应用, 能显示创建图形并得到实例的引用是非常有用的.
+ 
+  一个图形包括一个或多个子区. 子区能以规则网格的方式排列plot. 我们已经使用过subplot()方法, 在调用时指定所有plot的行数和列数以及要操作的plot 的序号.
+
+  如果需要更多的控制, 需要使用matplotlib.axes.Axes 类的坐标实例. 这样可以把plot 放置在图形窗口的任意位置, 例如可以把一个小的plot 放在一个大的plot中。
+
+. 刻度
+
+  刻度是图形的一部分, 有刻度定位器( tick locator)--- 指定刻度所在的位置 ---- 和刻度格式器(tick formatter) ----指定刻度显示的样式----组成. 刻度有主刻度(major ticks) 和次刻度(minor ticks), 默认不显示次刻度. 更重要的是, 主刻度和次刻度可以被独立的指定位置和格式化.
+
+  我们可以使用matplotlib.pyplot.locator_params() 方法来控制刻度定位器的行为. 尽管刻度位置通常会自动被确定下来,我们还是可以控制ikedu的数目, 以及在plot比较小时 使用一个紧凑试图( tight view)
+
+. 例子代码: ticktest.py
+
+  从例子的运行结果图表可以看到 x 轴和y 轴是如何被切分的, 以及数值是如何显示的. 我们也可以用locator 类完成相同的设置. 下面的代码的意思是设置主定位器为10 的倍数.
+
+  ax.xaxis.set_major_locator( matplotlib.ticker.MultipleLocation(10))
+
+  刻度格式器的配置非常简单. 格式器规定了值(通常是数字)的显示方式. 例如， 用matplotlib.ticker.FormatStrFormatter 可以方便的指定 '%2.1f' 或者 '%1.1f cm' 的字符串格式作为刻度标签.
+
+#. matplotlib 用浮点值表示日期, 其值为 从0001-01-01 UTC 起的天数 加 1. 因此 0001-01-01 UTC0 06:00的值为1.25
+
+  然后我们可以用matplotlib.dates.date2num() 、matplotlib.dates.num2date() 和matplotlib.dates.drange() 这样的helper方法对日期进行不同形式的转换.
+
+. 例子代码: datetest.py
+

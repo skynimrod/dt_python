@@ -1,0 +1,11 @@
+. 1. 出现304错误
+
+    找不到模板.  
+
+    检查发现 应用已经在install_apps了, 而且也在应用所在目录的templates子目录中的应用同名子目录下放置了对应的模板, 但是还是提醒找不到。
+
+   解决:
+
+      由于应用的models 发生了改变, 需要manage.py makemigrations report, 然后 manage.py migrate . 
+
+      也就是更新应用.  这样在进行访问就不会出现304.

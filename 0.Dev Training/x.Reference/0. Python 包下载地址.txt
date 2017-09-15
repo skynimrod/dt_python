@@ -1,0 +1,5 @@
+http://www.lfd.uci.edu
+
+http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
+
+https://pypi.python.org/pypi/pdfminer/

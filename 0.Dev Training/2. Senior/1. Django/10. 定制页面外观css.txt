@@ -1,0 +1,33 @@
+参见:
+
+     https://docs.djangoproject.com/en/1.10/intro/tutorial06/
+
+. 定制应用的外观
+
+  1. 在应用目录中创建子目录 static/应用名称. 例如 polls/static/polls.  与模板的目录结构类似
+
+  2. 创建格式化文件 style.css
+
+    polls/static/polls/style.css
+
+li a {
+    color: green;
+}
+
+body {
+    background: white url("images/background.gif") no-repeat right bottom;
+}
+
+    注意, images是polls/static/polls/的子目录, 与style.css 同一父目录，也即 polls/static/polls/images/, 
+
+
+  3. 下面修改模板的内容, 在文件顶部 添加 格式化的内容
+
+polls/templates/polls/index.html
+
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
+
+
+

@@ -1,0 +1,26 @@
+. Axes 标签对于读者理解图表非常重要, 它描述了图表中展现的数据内容. 通过向 axes 添加标签, 我们能够帮助读者更准确的理解图表所表达的信息.
+
+  在深入分析代码之前, 重要的是先了解matplotlib 是如何组织图表的.
+
+  最上层是一个Figure 实例, 包含了所有可见的和其他一些不可见的内容. 该 Figure 实例包含了一个Axes 实例字段 Figure.axes.  Axes 实例几乎包含了我们所关心的所有东西，如所有的线、点、刻度和标签。因此, 当调用plot()方法时, 就会向Axes.lines 列表添加一个线条的实例( matplotlib.lines.Line2D ). 如果绘制了一个直方图( 通过调用hist() ), 就会向 Axes.patches 列表添加许多矩形( "patches" 是从 MATLAB集成来的一个术语, 表示"颜色补片" 的概念 ).
+
+  Axes 实例也包含了XAxis 和 YAxis 实例的引用, 分别指向相应的x轴和y轴. XAxis 和 YAxis 管理坐标轴、标签、刻度、刻度标签、定位器和格式器的绘制, 我们可以通过Axes.xaxis 和 Axes.yaxis 分别引用它们. 其实不必按照前面所说的方式通过XAxis 或YAxis 实例得到标签对象, 因为 matplotlib 提供了一个helper方法(实际上是一个捷径)来迭代这些标签, 它们是 matplotlib.pyplot.xlabel() 和 matplotlib.pyplot.ylabel()
+
+. 操作步骤
+
+  我们现在要创建一个新的图表, 然后在其上面进行如下操作.
+
+  1. 创建一个基于一些随机生成的数据的plot.
+
+  2. 添加 title 和 axes 标签
+
+  3. 添加 alpha 设置
+
+  4. 向title 和 axes 标签添加阴影效果.
+
+. 工作原理
+
+      在绘制完数据集合的图表后, 接下来准备添加标题和标签, 并定制化他们的外观
+
+      首先, 添加一个标题. 然后设置标题字体的大小, 并设置标题文本的垂直对齐方式为bottom. 如果不带参数调用 matplotlib.patheffects.withSimplePatchShadow(), 回味标题添加默认的阴影效果. 
+  

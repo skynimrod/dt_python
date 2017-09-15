@@ -1,0 +1,33 @@
+. 如何改变线的各种属性, 如线条风格、颜色或者宽度. 根据要表达的信息合理的设置线型并明显的区分目标受众(受众如果是年轻群体, 可以使用比较生动的颜色; 如果是上年纪的人, 可能需要使用对比更强烈的颜色) 能让图表给观众留下非常生科的印象。
+
+. 如果你对颜色匹配不是很敏感, 有一些免费和商业的在线工具可以为你生成颜色集. Colorbrewer2 是最有名的工具之一, url 为:
+ 
+      http://colorbrewer2.org
+
+. 改变线的属性, 
+
+  1. 第一个最常用的方式是向方法传入关键字参数来制定线型. 例如 plot() 方法
+
+     plot(x, y, linewidth = 1.5 )
+
+  2. 第二种方式, 对 plot()方法的调用返回一个线条的实例(matplotlib.lines.Line2D), 可以在这个实力上用一系列的 setter 方法来设置不同的属性.
+
+     line, = plot(x, y)
+     line.set_linewidth(1.5)
+
+  3. 第三种方式, 使用过 MATLAB 的人会更习惯使用这种方式, 配置线条属性 --- 使用 setp() 发那个发
+
+     lines = plot(x, y)
+     setp(lines, 'linewidth', 1.5)
+
+     或者
+
+     setp(lines, linewidth = 1.5 )
+
+  # 不管你喜欢用哪种方式来配置线型, 选择一种并在这个项目中(或者至少在一个文件中)保持一致. 
+
+. 背景色
+
+  通过向如 matplotlib.pyplot.axes() 或者 matplotlib.pyplot.subplot() 这样的方法提供一个axisbg 参数, 我们可以指定坐标轴的背景色.
+
+   subplot( 111, axisbg(0.1843, 0.3098, 0.3098) )

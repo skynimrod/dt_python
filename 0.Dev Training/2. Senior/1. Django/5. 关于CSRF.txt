@@ -1,0 +1,19 @@
+参见:
+
+    https://docs.djangoproject.com/en/1.10/ref/csrf/
+
+. A number of settings can be used to control Django’s CSRF behavior:
+
+    CSRF_COOKIE_AGE
+    CSRF_COOKIE_DOMAIN
+    CSRF_COOKIE_HTTPONLY
+    CSRF_COOKIE_NAME
+    CSRF_COOKIE_PATH
+    CSRF_COOKIE_SECURE
+    CSRF_FAILURE_VIEW
+    CSRF_HEADER_NAME
+    CSRF_TRUSTED_ORIGINS
+
+. 在Django 中，可以在模板中添加 {{ csrf_token }}来 防范 csrf .
+
+. 在js, jsp 等等其他工具中, 可以访问 cookie 中的CSRF 数据来进行csrf控制.

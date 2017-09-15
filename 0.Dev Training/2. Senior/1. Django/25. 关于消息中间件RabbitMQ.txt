@@ -1,0 +1,304 @@
+参见:
+
+     http://www.rabbitmq.com/
+
+     http://docs.jinkan.org/docs/celery/
+
+     http://www.cnblogs.com/phennry/p/5713274.html
+
+     http://blog.csdn.net/xuwei198995/article/details/39378259      Windows中 RabbitMQ安装与环境变量配置
+
+     http://www.rabbitmq.com/install-windows-manual.html            这个是 官方安装配置说明. 上面的内容是这个的翻译
+
+. 一. 安装
+
+    1. RabbitMQ 需要先安装ErLang
+
+        http://www.erlang.org/
+
+     配置环境变量:
+
+        ERLANG_HOME=D:\D_0_DevEnv\erl8.1
+
+     添加到PATH   %ERLANG_HOME%\bin;
+
+    2. 下载安装RabbitMQ
+
+       http://www.rabbitmq.com/
+
+       配置环境变量:
+
+          RABBITMQ_SERVER=D:\D_0_DevEnv\RabbitMQ Server\rabbitmq_server-3.6.5
+
+       添加到PATH   %RABBITMQ_SERVER%\sbin
+
+    3. 测试 RabbitMQ 是否安装成功
+
+       命令行下面, 运行 rabbitmq-service.  如果返回相关的信息则表示成功.
+
+    4. 然后激活相关的插件， 用管理员身份
+
+F:\F_3_test\3_Python>rabbitmq-plugins.bat enable rabbitmq_management
+The following plugins have been enabled:
+  mochiweb
+  webmachine
+  rabbitmq_web_dispatch
+  amqp_client
+  rabbitmq_management_agent
+  rabbitmq_management
+
+Applying plugin configuration to rabbit@Adams... started 6 plugins.
+
+F:\F_3_test\3_Python>
+
+    5. 安装完成之后以管理员身份启动 rabbitmq-service.bat
+
+rabbitmq-service.bat stop
+rabbitmq-service.bat install
+rabbitmq-service.bat start     
+
+F:\F_3_test\3_Python>rabbitmq-service.bat stop
+D:\D_0_DevEnv\erl8.1\erts-8.1\bin\erlsrv: Service RabbitMQ stopped.
+
+F:\F_3_test\3_Python>rabbitmq-service.bat install
+RabbitMQ service is already present - only updating service parameters
+
+F:\F_3_test\3_Python>rabbitmq-service.bat start
+D:\D_0_DevEnv\erl8.1\erts-8.1\bin\erlsrv: Service RabbitMQ started.
+
+F:\F_3_test\3_Python>
+
+   6. 现在打开浏览器，输入：http://localhost:15672/ ，如果出现以下页面，则表示服务器配置成功。 
+默认用户名为guest,密码：guest
+
+   7. http://www.cnblogs.com/kerwinC/p/5967584.html
+
+      http://www.jb51.net/article/75647.htm     --- 里面有非常详细的命令行
+
+     设置远程账号
+
+     7.1 创建一个admin用户
+ 
+         rabbitmqctl add_user admin 123123
+
+     7.12 创建一个vhost
+
+         rabbitmqctl add_vhost .
+
+         查看是否创建成功
+
+         rabbitmqctl list_vhosts
+
+     7.2 设置该用户为administrator角色
+ 
+         rabbitmqctl set_user_tags admin administrator
+
+     7.3 设置权限
+
+         rabbitmqctl set_permissions -p '/' admin '.' '.' '.'
+
+        (env3) F:\F_3_test\3_Python>rabbitmqctl set_permissions -p '/' admin '.' '.' '.'
+
+        Setting permissions for user "admin" in vhost "'/'" ...
+        Error: no_such_vhost: '/'
+
+
+        (env3) F:\F_3_test\3_Python\mysite2>rabbitmqctl set_permissions -p / admin . . .
+
+        Setting permissions for user "admin" in vhost "/" ...         # 不加引号就可以了。。。。。
+
+    7.4 重启rabbitmq服务
+
+        rabbitmq-server restart
+        
+    
+
+. FAQ:
+
+  1. 启动 RabbitMQ 出错了
+
+F:\F_3_test\3_Python>rabbitmq-service enable rabbitmq_maangement
+D:\D_0_DevEnv\erl8.1\erts-8.1\bin\erlsrv: Service RabbitMQ enabled.
+
+F:\F_3_test\3_Python>rabbitmq-service install
+RabbitMQ service is already present - only updating service parameters
+
+F:\F_3_test\3_Python>rabbitmq-service start
+D:\D_0_DevEnv\erl8.1\erts-8.1\bin\erlsrv: Failed to start service RabbitMQ.
+Error: 。。。。。。。
+
+   原因是RabbitMQ 已经作为服务启动了, 应该先Stop再 start 就没问题了。 
+
+=========================================
+
+几个概念说明:
+   
+   Broker : 简单来说就是消息队列服务器实体
+
+   Exchange : 消息交换机, 它指定消息按什么规则, 路由到哪个队列
+
+   Queue:  消息队列载体, 每个消息都会被投入到一个或多个队列
+
+   Binding: 绑定, 他的作用就是把exchange 和queue 按照 路由规则绑定起来
+
+   Routing Key : 路由关键字. Exchange根据这个关键字进行消息投递
+
+   vhost: 虚拟主机, 一个broker里可以开设多个vhost, 用作不同用户的权限分离
+
+   producer: 消息生产者, 就是投递消息的程序
+
+   consumer: 消息消费者, 就是接受消息的程序
+
+   channel: 消息通道, 在客户端的每个连接里, 可建立多个channel, 每个channel 代表一个会话任务.
+
+. 消息队列的使用过程大概如下:
+
+  (1). 客户端连接到消息队列服务器, 打开一个channel
+
+  (2). 客户端声明一个exchange， 并设置相关属性
+
+  (3). 客户端声明一个queue, 并设置相关属性
+
+  (4). 客户端使用routing key， 在exchange 和queue 之间建立好绑定关系
+
+  (5). 客户端投递消息到exchange
+
+
+  exchange 接收到消息后, 就根据消息的key和已经设置的binding, 进行消息路由, 将消息投递到一个或多个队列里.
+
+  exchange 也有几个类型, 完全根据key进行投递的叫做Direct交换机, 例如, 绑定时设置了routing key为"abc", 那么客户端提交的消息, 只有设置了key为"abc" 的才会投递到队列.  对key进行模式匹配后进行的投递的叫做Topic 交换机, 符号"#" 匹配一个或多个词, 符号"*" 匹配正好一个词. 例如"abc.#" 匹配"abc.def.ghi", "abc.*" 只匹配"abc.def". 还有一种不需要key的, 叫做 Fanout交换机, 它采用广播模式, 一个消息进来时, 投递到与该交换机绑定的所有队列.
+
+  RabbitMQ支持消息的持久化, 也就是数据写在磁盘上, 为了数据安全考虑, 我想大多数用户都会选择持久化. 消息队列持久化包括3个部分:
+
+  (1). exchange 持久化, 在声明时指定 durable => 1
+
+  (2). queue 持久化, 在声明时指定durable=> 1
+
+  (3). 消息持久化, 在投递时指定 delivery_mode => 2 (1 是非持久化)
+
+  如果exchange 和 queue 都是持久化的, 那么它们之间的binding也是持久化的. 如果exchange 和queue 两者之间有一个持久化, 一个非持久化, 就不允许建立绑定.
+
+. 实际应用过程
+
+  1. 安装 rabbitmq,, 启动、停止、重启 rabbitmq  (略, 参见前面部分的描述)
+
+  2. 在正式应用之前, 现在 RabbitMQ 里创建一个vhost， 加一个用户, 并设置该用户的权限
+  
+     使用 rabbitmqctl 客户端工具, 在根目录下创建"/pyhtest" 这个vhost:
+
+          rabbitmqctl add_vhost /pyhtest
+
+     创建一个用户名"pyh", 设置密码"pyh1234":
+
+          rabbitmqctl add_user pyh pyh1234
+
+     设置pyh用户对/pyhtest 这个vhost 拥有全部权限:
+
+          rabbitmqctl set_permissions -p /pyhtest pyh ".*" ".*" ".*"
+
+          后面三个"*" 代表 pyh 用户拥有对/pyhtest的配置、写、读全部权限
+
+     设置好后, 开始编程, 用
+
+设置好后，开始编程，用Perl写一个消息投递程序（producer）：
+#!/usr/bin/perl
+　　use strict;
+　　use Net::RabbitMQ;
+　　use UUID::Tiny;
+my $channel = 1000; # channel ID，可以随意指定，只要不冲突
+　　my $queuename = “pyh_queue”; # 队列名
+　　my $exchange = “pyh_exchange”; # 交换机名
+　　my $routing_key = “test”; # routing key
+my $mq = Net::RabbitMQ->new(); # 创建一个RabbitMQ对象
+$mq->connect(“localhost”, { vhost => “/pyhtest”, user => “pyh”, password => “pyh1234″ }); # 建立连接
+　　$mq->channel_open($channel); # 打开一个channel
+　　$mq->exchange_declare($channel, $exchange, {durable => 1}); # 声明一个持久化的交换机
+　　$mq->queue_declare($channel, $queuename, {durable => 1}); # 声明一个持久化的队列
+　　$mq->queue_bind($channel, $queuename, $exchange, $routing_key); # 使用routing key在交换机和队列间建立绑定
+for (my $i=0;$i<10000000;$i++) { # 循环1000万次
+　　my $string = create_UUID_as_string(UUID_V1); # 产生一条UUID作为消息主体
+　　$mq->publish($channel, $routing_key, $string, { exchange => $exchange }, { delivery_mode => 2 }); # 将消息结合key以持久化模式投递到交换机
+　　}
+$mq->disconnect(); # 断开连接
+消息接受程序（consumer）大概如下：
+#!/usr/bin/perl
+　　use strict;
+　　use Net::RabbitMQ;
+my $channel = 1001;
+　　my $queuename = “pyh_queue”;
+　　my $mq = Net::RabbitMQ->new();
+$mq->connect(“localhost”, { vhost=>”/pyhtest”, user => “pyh”, password => “pyh1234″ });
+　　$mq->channel_open($channel);
+while (1) {
+　　my $hashref = $mq->get($channel, $queuename);
+　　last unless defined $hashref;
+　　print $hashref->{message_count}, “: “, $hashref->{body},”\n”;
+　　}
+$mq->disconnect();
+consumer连接后只要指定队列就可获取到消息。
+上述程序共投递1000万条消息，每条消息36字节（UUID），打开持久化，共耗时17分多钟（包括产生UUID的时间），每秒投递消息约9500条。测试机器是8G内存、8核志强CPU。
+投递完后，在/var/lib/rabbitmq/mnesia/rabbit@${hostname}/msg_store_persistent目录，产生2G多的持久化消息数据。在运行consumer程序后，这些数据都会消失，因为消息已经被消费了。
+
+. 集群配置
+
+   单机环境下的集群配置：
+首先启动两个实例，rab和rab2，端口分别为9991和9992
+RABBITMQ_NODE_PORT=9991 RABBITMQ_NODENAME=rab rabbitmq-server -detached
+RABBITMQ_NODE_PORT=9992 RABBITMQ_NODENAME=rab2 rabbitmq-server -detached
+二：停止rab2，并将其加入cluster集群中
+rabbitmqctl -n rab2 stop_app
+rabbitmqctl -n rab2 join_cluster rab@rab（@rab，这里的rab表示主机名）
+重新启动rab2
+RABBITMQ_NODE_PORT=9992 RABBITMQ_NODENAME=rab2 rabbitmq-server -detached
+查看集群的状态
+rabbitmqctl cluster_status -n rab
+显示如下信息表示集群配置正常：
+Cluster status of node rab@rab ...
+　　[{nodes,[{disc,[rab2@rab,rab@rab]}]},
+　　{running_nodes,[rab@rab]},
+　　{partitions,[]}]
+　　...done.
+
+=====================================
+
+1. 生产者例子  producer.py
+
+# -*-  coding:utf-8  -*-
+
+import pika
+import traceback
+
+try:
+    credentials = pika.PlainCredentials('admin','123123')
+    connection = pika.BlockingConnection( pika.ConnectionParameters(
+        '192.168.56.1', 5672, '/', credentials ))
+    channel = connection.channel()
+
+    # 声明 Queue
+    channel.queue_declare( queue = 'balance' )
+
+    # n RabbitMQ a message can never be sent directly to the queue, it always needs to go through an exchange.
+
+    channel.basic_publish(  exchange = '',
+                            routing_key = 'balance',
+                            body = 'Hello World!' )
+    print(" [x] Send 'Hello World!' ")
+    connection.close()
+except:
+    traceback.print_exc()
+
+
+c:\...\>python producer.py
+
+。。。。
+
+发送过队列后, 可在MQ服务器中查看队列状态(通过RabbitMQ 的浏览器管理界面也可以看到Balance 队列)
+
+(env3) E:\E_1_Developement Tools\7 Python\0.Dev Training\2. Senior\4. MQ\1. Rabb
+itMQ>rabbitmqctl list_queues
+Listing queues ...
+celery  0
+balance 1
+
+
+

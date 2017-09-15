@@ -1,0 +1,218 @@
+. Celery 3.1.24 + Django 1.10.1 , 因为Celery 4.0 不支持Windows , 启动task worker 的时候总出错. 
+
+1. 应用下面的tasks.py 的内容
+
+from celery import Celery
+from celery.schedules import crontab
+from celery.task.schedules import crontab
+from celery.decorators import periodic_task
+from celery.utils.log import get_task_logger
+
+
+app = Celery('tasks', broker='amqp://guest@localhost//')
+
+logger = get_task_logger(__name__)
+
+@app.task
+def add(x,y):
+    print('add(x,y)')
+    return x+y
+
+@periodic_task(
+    run_every=( crontab(minute='*/1')),
+    name="adamstask",
+    ignore_result=True
+)
+def adamstask():
+    logger.info('-----------adamstask  Test----')
+    return('**adamstask  Test**')
+  
+
+2. 启动worker
+
+  在tasks.py 所在的目录下(对应的是Django项目的一个app目录)
+
+(env3) F:\F_3_test\5_Tmp\tasktest\demoapp>celery -A tasks worker -l info
+[2016-11-25 15:31:47,394: WARNING/MainProcess] c:\users\my\envs\env3\lib\site-pa
+ckages\celery\apps\worker.py:161: CDeprecationWarning:
+Starting from version 3.2 Celery will refuse to accept pickle by default.
+
+The pickle serializer is a security concern as it may give attackers
+the ability to execute any command.  It's important to secure
+your broker from unauthorized access when using pickle, so we think
+that enabling pickle should require a deliberate action and not be
+the default choice.
+
+If you depend on pickle then you should set a setting to disable this
+warning and to be sure that everything will continue working
+when you upgrade to Celery 3.2::
+
+    CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
+
+You must only enable the serializers that you will actually use.
+
+
+  warnings.warn(CDeprecationWarning(W_PICKLE_DEPRECATED))
+
+ -------------- celery@Adams v3.1.24 (Cipater)
+---- **** -----
+--- * ***  * -- Windows-7-6.1.7601-SP1
+-- * - **** ---
+- ** ---------- [config]
+- ** ---------- .> app:         tasks:0x3ac8160
+- ** ---------- .> transport:   amqp://guest:**@localhost:5672//
+- ** ---------- .> results:     disabled://
+- *** --- * --- .> concurrency: 4 (prefork)
+-- ******* ----
+--- ***** ----- [queues]
+ -------------- .> celery           exchange=celery(direct) key=celery
+
+
+[tasks]
+  . adamstask
+  . tasks.add
+
+[2016-11-25 15:31:47,550: INFO/MainProcess] Connected to amqp://guest:**@127.0.0
+.1:5672//
+[2016-11-25 15:31:47,628: INFO/MainProcess] mingle: searching for neighbors
+[2016-11-25 15:31:48,673: INFO/MainProcess] mingle: all alone
+[2016-11-25 15:31:48,689: WARNING/MainProcess] celery@Adams ready.
+[2016-11-25 15:34:00,007: INFO/MainProcess] Received task: adamstask[3cfbd481-0b
+5f-4893-91e7-5e91b602eb7d]
+[2016-11-25 15:34:00,007: INFO/Worker-1] adamstask[3cfbd481-0b5f-4893-91e7-5e91b
+602eb7d]: -----------adamstask  Test----
+[2016-11-25 15:34:00,007: INFO/MainProcess] Task adamstask[3cfbd481-0b5f-4893-91
+e7-5e91b602eb7d] succeeded in 0s: **adamstask  Test**  
+
+3. 启动 Celery  Beat , 激活任务调度
+
+(env3) F:\F_3_test\5_Tmp\tasktest\demoapp>celery -A tasks beat -l info
+celery beat v3.1.24 (Cipater) is starting.
+__    -    ... __   -        _
+Configuration ->
+    . broker -> amqp://guest:**@localhost:5672//
+    . loader -> celery.loaders.app.AppLoader
+    . scheduler -> celery.beat.PersistentScheduler
+    . db -> celerybeat-schedule
+    . logfile -> [stderr]@%INFO
+    . maxinterval -> now (0s)
+[2016-11-25 15:33:44,844: INFO/MainProcess] beat: Starting...
+[2016-11-25 15:34:00,007: INFO/MainProcess] Scheduler: Sending due task adamstas
+k (adamstask)
+[2016-11-25 15:35:00,006: INFO/MainProcess] Scheduler: Sending due task adamstas
+k (adamstask)
+[2016-11-25 15:36:00,003: INFO/MainProcess] Scheduler: Sending due task adamstas
+k (adamstask)
+[2016-11-25 15:37:00,001: INFO/MainProcess] Scheduler: Sending due task adamstas
+k (adamstask)
+[2016-11-25 15:38:00,001: INFO/MainProcess] Scheduler: Sending due task adamstas
+k (adamstask)
+[2016-11-25 15:39:00,015: INFO/MainProcess] Scheduler: Sending due task adamstas
+k (adamstask)
+[2016-11-25 15:40:00,012: INFO/MainProcess] Scheduler: Sending due task adamstas
+k (adamstask)
+
+  需要注意的是, 如果运行过一次上面的命令, 当前目录下就会产生4个文件:
+
+      celerybeat.pid
+
+      celerybeat-schedule.bak
+
+      celerybeat-schedule.dat
+
+      celerybeat-schedule.dir
+
+  只要存在这4个文件, 那么下一次运行上面的命令的时候就会提示已经启动过了, 如下:
+
+(env3) F:\F_3_test\5_Tmp\tasktest\demoapp>celery -A tasks beat -l info
+celery beat v3.1.24 (Cipater) is starting.
+ERROR: Pidfile (celerybeat.pid) already exists.
+Seems we're already running? (pid: 8204)
+
+   只要删除上面的4个文件就可以在此启动celery beat， 不知道是咋回事, 可能是如果启动过后, 有了这4个文件就可以快速启动？？？？？
+
+   而且celery 3.1.25 也不能用, 提示的错误与Celery4.0 类似.
+
+(env4) F:\F_3_test\5_Tmp\tasktest\demoapp>celery -A tasks beat -l info
+celery beat v3.1.25 (Cipater) is starting.
+Traceback (most recent call last):
+  File "C:\DevProgram\Python34\Lib\runpy.py", line 170, in _run_module_as_main
+    "__main__", mod_spec)
+  File "C:\DevProgram\Python34\Lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "C:\Users\my\Envs\env4\Scripts\celery.exe\__main__.py", line 9, in <modul
+e>
+  File "c:\users\my\envs\env4\lib\site-packages\celery\__main__.py", line 30, in
+ main
+    main()
+  File "c:\users\my\envs\env4\lib\site-packages\celery\bin\celery.py", line 81,
+in main
+    cmd.execute_from_commandline(argv)
+  File "c:\users\my\envs\env4\lib\site-packages\celery\bin\celery.py", line 793,
+ in execute_from_commandline
+    super(CeleryCommand, self).execute_from_commandline(argv)))
+  File "c:\users\my\envs\env4\lib\site-packages\celery\bin\base.py", line 311, i
+n execute_from_commandline
+    return self.handle_argv(self.prog_name, argv[1:])
+  File "c:\users\my\envs\env4\lib\site-packages\celery\bin\celery.py", line 785,
+ in handle_argv
+    return self.execute(command, argv)
+  File "c:\users\my\envs\env4\lib\site-packages\celery\bin\celery.py", line 717,
+ in execute
+    ).run_from_argv(self.prog_name, argv[1:], command=argv[0])
+  File "c:\users\my\envs\env4\lib\site-packages\celery\bin\base.py", line 315, i
+n run_from_argv
+    sys.argv if argv is None else argv, command)
+  File "c:\users\my\envs\env4\lib\site-packages\celery\bin\base.py", line 377, i
+n handle_argv
+    return self(*args, **options)
+  File "c:\users\my\envs\env4\lib\site-packages\celery\bin\base.py", line 274, i
+n __call__
+    ret = self.run(*args, **kwargs)
+  File "c:\users\my\envs\env4\lib\site-packages\celery\bin\beat.py", line 79, in
+ run
+    return beat().run()
+  File "c:\users\my\envs\env4\lib\site-packages\celery\apps\beat.py", line 83, i
+n run
+    self.start_scheduler()
+  File "c:\users\my\envs\env4\lib\site-packages\celery\apps\beat.py", line 95, i
+n start_scheduler
+    platforms.create_pidlock(self.pidfile)
+  File "c:\users\my\envs\env4\lib\site-packages\celery\platforms.py", line 256,
+in create_pidlock
+    pidlock = _create_pidlock(pidfile)
+  File "c:\users\my\envs\env4\lib\site-packages\celery\platforms.py", line 264,
+in _create_pidlock
+    print(PIDLOCKED.format(pidfile, pidlock.read_pid()), file=sys.stderr)
+  File "c:\users\my\envs\env4\lib\site-packages\celery\platforms.py", line 169,
+in read_pid
+    with ignore_errno('ENOENT'):
+  File "C:\DevProgram\Python34\Lib\contextlib.py", line 59, in __enter__
+    return next(self.gen)
+  File "c:\users\my\envs\env4\lib\site-packages\celery\platforms.py", line 780,
+in ignore_errno
+    errnos = [get_errno_name(errno) for errno in errnos]
+  File "c:\users\my\envs\env4\lib\site-packages\celery\platforms.py", line 780,
+in <listcomp>
+    errnos = [get_errno_name(errno) for errno in errnos]
+OSError: [WinError 87] 参数错误。
+
+(env4) F:\F_3_test\5_Tmp\tasktest\demoapp>
+(env4) F:\F_3_test\5_Tmp\tasktest\demoapp>workon env3
+(env3) F:\F_3_test\5_Tmp\tasktest\demoapp>celery -A tasks beat -l info
+celery beat v3.1.24 (Cipater) is starting.
+ERROR: Pidfile (celerybeat.pid) already exists.
+Seems we're already running? (pid: 5956)
+
+(env3) F:\F_3_test\5_Tmp\tasktest\demoapp>
+
+而且, 如果另外启动beat， 之前的beat就会退出。。。。。
+
+ 查看帮助, celery beat --help
+
+ 发现,   --pidfile=PIDFILE     Optional file used to store the process pid. The
+                        program will not start if this file already exists and
+                        the pid is still alive.
+
+ 这就是不能再次启动的真正原因, 如果这个文件存在pid 活着就不会启动(实际上pid 已经不存在了, 但是文件存在也不能启动)
+    

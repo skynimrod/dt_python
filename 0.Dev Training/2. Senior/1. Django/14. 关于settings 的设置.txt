@@ -1,0 +1,7 @@
+. ²Î¼û:
+
+      http://blog.csdn.net/werm520/article/details/41485459
+
+      https://docs.djangoproject.com/en/1.10/ref/settings/
+
+. 

@@ -1,0 +1,54 @@
+.1. 构建matplotlib 运行环境
+
+   需要满足相关软件依赖. Matplotlib 的构建过程依赖NumPy、libpng和 freetype 软件包. 要从源代码构建 matplotlib, 必须先要安装好NumPy 库. 可以访问 
+
+        http://www.numpy.org/ 
+
+   了解安装NumPy 库的方法(安装1.4或以上版本, Python 3 xuyao NumPy 1.5 或以上版本)
+
+       NumPy 库提供处理大数据集的数据结构和数学方法. 注入元组、列表或字典 等Python 的默认数据结构同样可以很好的支持数据的插入、删除和连接.  NumPy 的数据结构支持"矢量"操作, 使用简单, 同时具有很高的执行效率. 矢量操作在实现时充分考虑了大数据的需要, 基于C语言的实现方式也保证了执行效率.
+
+       基于NumPy 构建的SciPy 库, 是Python 的标准科学计算和数学计算工具包, 包含了大量的专用函数和算法. 而大部分函数和算法源自著名的Netlib 软件仓库(参见: http://www.netlib.org)， 实际上是使用C语言和Fortran 语言实现的. 
+
+  --------- 安装NumPy 库的步骤如下  --------------
+
+  1. 从 http://www.numpy.org/ 获取 NumPy
+
+  x. 安装所需要的库
+
+     libpng 1.2 : png 文件处理 (依赖 zlib 库 ) 
+
+     freetype 1.4+ : 处理 True type 字体
+
+. 无论工作在什么项目中, IPython 都是值得推荐的. IPython 是一款交互式Python 命令行工具. 其 提供的PyLab 模式, 已经导入了matplotlib 库 与 相关软件包(例如 NumPy 和 SciPy ), 可以直接使用相关库的功能. IPython 工具的安装与使用方法十分简单明了, 可以通过IPython 的官网查看相关细节。 
+
+  y. 安装 virtualenv 和 virtualenvwrapper
+
+     http://www.virtualenv.org/en/latest/index.html
+     
+1. virtualenv 用来建立一个虚拟的python环境，一个专属于项目的python环境。用virtualenv 来保持一个干净的环境非常有用。
+2. pip 用来解决项目依赖问题。将项目所有依赖的第三方库写在一个requirements.txt 中用pip 批量安装。一般和virtualenv 配合使用，将所有包安装在virtualenv 的环境中。
+3. fabric 用来自动化远程部署项目，非常的方便。可以根据需要在本地、远程依次执行一系列shell 命令、程序等。比如从代码库更新代码，执行数据迁移脚本，重启服务进程，完成自动化的部署。 
+
+作者：Waylybaye
+链接：http://www.zhihu.com/question/19717006/answer/12747073
+来源：知乎
+著作权归作者所有，转载请联系作者获得授权。
+
+  我不赞同, 相比virtualenv和pip, buildout才是真正的好东西, 不论是虚拟python环境的干净程度, 用法的方便度, 对安装包的可定制/操控度, 还是对批量部署的支持都是远超前者. 可以说 virtualenv + pip 还停留在手工时代, 而buildout 已经进入了机械时代.
+
+至于 fabric, 的确是个好工具 简简单单一个 fabfile 就可以实现代码的批量部署和管理, 并且也可以选择不用它的fab命令而自己基于它的api进行深度开发, 唯一的弱点就是对ssh的依赖略重了吧.
+
+另外推荐另一个好工具 supervisor. 
+
+作者：王电轻
+链接：http://www.zhihu.com/question/19717006/answer/21120170
+来源：知乎
+著作权归作者所有，转载请联系作者获得授权。
+
+. 在Windows 上安装matplotlib
+
+   有2中方式. 较简单的方式是安装预打包的Python 环境, 如 EPD、Anaconda 和 Python(x,y).   推荐这种方式.
+
+   第二种方式, 使用预编译的二进制文件来安装matplotlib 和依赖软件包. 需要注意的是安装NumPy 和SciPy的版本.  
+  

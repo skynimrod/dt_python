@@ -1,0 +1,13 @@
+参见:
+
+    http://blog.csdn.net/civilman/article/details/6337230
+
+. ffmpeg
+
+      http://sourceforge.net/projects/mplayer-win32/files/    下载地址
+ 
+      http://www.ffmpeg.org/download.html      FFmpeg 官网   https://ffmpeg.org/
+
+. mencoder:
+
+     http://www.mplayerhq.hu/design7/news.html

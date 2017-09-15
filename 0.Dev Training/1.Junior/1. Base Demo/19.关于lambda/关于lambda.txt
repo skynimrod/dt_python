@@ -1,0 +1,5 @@
+²Î¼û:
+
+     http://www.cnblogs.com/BeginMan/p/3178103.html
+
+. lambda [arg1[,arg2,arg3....argN]]:expression

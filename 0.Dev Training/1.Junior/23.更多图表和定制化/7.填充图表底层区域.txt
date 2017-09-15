@@ -1,0 +1,30 @@
+. 填充图表底层区域
+
+      在 matplotlib 中绘制一个填充多边形的基本方法是使用 matplotlib.pyplot.fill.
+
+      该方法接受和 matplotlib.pyplot.plot 相似的参数, 即多个x,y 对 和 其他 Line2D 属性. 函数返回被添加的Patch实例的列表.
+
+. 准备工作
+
+      除了如histogram() 等固有的绘制闭合的填充多边形的绘图函数之外, matplotlib 还提供了几个方法来帮助我们绘制填充的图形. 
+
+      我们已经提到了一个---- matplotlib.pyplot.fill, 另外还有 matplotlib.pyplot.fill_between() 和 matplotlib.pyplot.fill_betweenx() 函数。 这些方法填充两条曲线间的多边形. fill_between() 和 fill_betweenx() 主要的区别是后者填充 x轴的值之间的区域, 而前者填充y 轴的值 之间的区域.
+
+      函数fill_between接受参数x(数据的x轴数组) 和 y1 及 y2 (数据的y轴数组)。 通过参数,我们可以指定条件来决定要填充的区域. 这个条件是一个布尔条件, 通常指定 y 轴值范围. 默认值为None， 表示填充所有区域. 
+
+. 操作步骤.
+
+      7_fill1.py  例子非常直观的让我们了解了fill_between() 是如何工作的. 值得注意的是, fill_between()只是绘制了一个填充了颜色('silver')的多边形区域, 所以我们需要绘制实际的函数线条, 当然是使用plot()了.
+
+      7_fill2.py 演示另一个技巧. 它将为fill 函数引入更多的条件. 
+
+. 工作原理
+
+  在这个例子中, 首先创建了两个在某些点重叠的正弦曲线函数.
+
+  还创建了2个子区, 用来比较两种渲染填充区域方式的差异.
+
+  在这两种情况下, 我们使用了带参数where 的fill_between()方法填充 where 等于 True 的区域, 其中 where 参数接收一个长度为N的布尔数组.
+
+  下面的一个子区演示了mask_greater, 它屏蔽了数组中大于给定值的所有值. 这是 numpy.ma 包中的方法, 用来处理缺失或者无效的值. 我们在底部的坐标轴上添加网格使其更直观. 
+      

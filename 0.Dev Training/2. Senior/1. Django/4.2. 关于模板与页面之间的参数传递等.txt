@@ -1,0 +1,48 @@
+参见:   
+
+     http://www.cnblogs.com/MnCu8261/p/5873512.html      django中模板变量与内置标签以及过滤器  
+
+     http://blog.csdn.net/woohyuknrg/article/details/17140531    Django model,QuerySet 序列化成json的方法 
+
+. 1. 过滤器filter
+
+    {% if reportset.exists %}
+    	{% regroup reportset|dictsort:"stockcode" by releaseddate as report_list%}
+    	<ul>
+    	    <li>pagenum = {{ pagenum }}, report.count= {{ reportset.count }} </li>
+	    {% for item in report_list %}
+		<li>{{ item.grouper }} {{ item.list.0.reportname | slice:":4" }} forloop.counter0={{ forloop.counter0 }}</li>
+		<ul>
+		   {% for report in item.list %}
+		   <li><a href="{{ prefix }}{{ report.reporturl }}" target="_blank">
+		   {{ report.stockcode}}({{report.reportname|slice:":4"}}) : {{ report.reportname }} - {{ report.releaseddate }}</a></li>
+                   {% endfor %}
+		</ul>
+           {% endfor %}
+       </ul>
+   {% endif %}
+
+    上面这句, 添加了| dictsort, 那么显示结果就可能是：
+
+2016-11-11 花王股份 forloop.counter0=0
+
+    603007(花王股份) : 花王股份：股票交易异常波动公告 - 2016-11-11
+    603007(花王股份) : 花王股份：控股股东及实际控制人关于公司股票交易异常波动问询函的回函 - 2016-11-11
+
+2016-11-10 花王股份 forloop.counter0=1
+
+    603007(花王股份) : 花王股份：关于完成注册资本等事项工商变更登记的公告 - 2016-11-10
+
+2016-11-12 喜临门： forloop.counter0=2
+
+    603008(喜临门：) : 喜临门：关于公司控股股东拟发行可交换债券对持有的部分本公司股份办理担保及信托登记的公告 - 2016-11-12
+
+2016-11-10 喜临门： forloop.counter0=3
+
+    603008(喜临门：) : 喜临门：关于公司控股股东完成2016年非公开可交换公司债券（第二期）发行的公告 - 2016-11-10
+
+   ==============================
+
+   修改:
+
+   

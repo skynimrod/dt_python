@@ -1,0 +1,37 @@
+参见:
+
+     http://pypi.python.org/pypi/Cython/
+     
+     https://pypi.python.org/pypi/Cython/#downloads
+
+. Cython 语言 让为Python 写 C扩展库就像写Python 自己一样容易.  Cython 是基于Pyrex (写Python 扩展模块的语言)
+
+. 关于.whl 文件的安装
+
+  参见:
+
+       https://www.douban.com/note/484046487/
+
+  
+  python下如何安装.whl包？
+
+  下载.whl包
+  先pip install wheel
+
+  之后pip install 包名字.whl 即可安装某模块包
+
+F:\1 Developement Tools\7 Python\0.Dev Training\1.Junior\2.NumPy>pip install Cyt
+hon-0.24.1-cp27-none-win32.whl
+Processing f:\1 developement tools\7 python\0.dev training\1.junior\2.numpy\cyth
+on-0.24.1-cp27-none-win32.whl
+Installing collected packages: Cython
+Successfully installed Cython-0.24.1
+You are using pip version 8.1.1, however version 8.1.2 is available.
+You should consider upgrading via the 'python -m pip install --upgrade pip' comm
+and.
+
+ # 如果发现pip 版本需要更新, 可以继续更新pip
+
+ e:\...\> python -m pip install --upgrade pip
+
+ 这样就会下载并更新pip 了

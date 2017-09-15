@@ -1,0 +1,11 @@
+参见:
+
+    http://www.jb51.net/article/64410.htm
+
+    http://www.yihaomen.com/article/python/533.htm     合并多个python list以及合并多个 django QuerySet 的方法
+
+. 1. QuerySet 包含的记录数
+
+     qs = Question.objects.filter( name='admin', date='2016-11-10' )
+
+     

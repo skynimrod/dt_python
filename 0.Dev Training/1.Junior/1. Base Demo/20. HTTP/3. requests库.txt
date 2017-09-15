@@ -1,0 +1,32 @@
+参见:
+
+     http://blog.csdn.net/shanzhizi/article/details/50903748
+     http://www.cnblogs.com/owasp/p/6413480.html
+
+. Requests 是用Python语言编写，基于 urllib，采用 Apache2 Licensed 开源协议的 HTTP 库。它比 urllib 更加方便，可以节约我们大量的工作，完全满足 HTTP 测试需求。Requests 的哲学是以 PEP 20 的习语为中心开发的，所以它比 urllib 更加 Pythoner。更重要的一点是它支持 Python3 ！
+
+. FAQ:
+
+   (env3) E:\E_1_Developement Tools\7 Python\0.Dev Training\1.Junior\1. Base Demo\2
+0. HTTP>requestsTest.py http://www.cninfo.com.cn/disclosure/fulltext/plate/shmbl
+atest_24h.js shmb.txt
+Traceback (most recent call last):
+  File "E:\E_1_Developement Tools\7 Python\0.Dev Training\1.Junior\1. Base Demo\
+20. HTTP\requestsTest.py", line 3, in <module>
+    import requests
+ImportError: No module named 'requests'
+
+  这个问题的原因是找不到requests, 因为运行的时候是没有用Python, 就找不到Python 安装库的位置. 改为如下运行就可以了:
+
+(env3) E:\E_1_Developement Tools\7 Python\0.Dev Training\1.Junior\1. Base Demo\2
+0. HTTP>python requestsTest.py http://www.cninfo.com.cn/disclosure/fulltext/plat
+e/shmblatest_24h.js shmb.txt
+shmblatest_24h.js filesize:52402
+start thread:Thread-1 at 1491387294.650654
+start thread:Thread-2 at 1491387294.651654
+start thread:Thread-3 at 1491387294.653654
+start thread:Thread-4 at 1491387294.656654
+stop thread:Thread-2 at 1491387294.949671
+stop thread:Thread-4 at 1491387294.949671
+stop thread:Thread-1 at 1491387294.973673
+stop thread:Thread-3 at 1491387294.975673

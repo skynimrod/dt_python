@@ -1,0 +1,5 @@
+. try:
+       x = input('Enter the first name: ')
+       println x/0
+  except ZeroDivisionError:
+       print "分母不能为0” 

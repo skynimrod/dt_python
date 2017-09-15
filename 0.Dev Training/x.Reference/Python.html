@@ -1,0 +1,55 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<link rel="stylesheet" type="text/css" href="Python_files/bbs.css"></head>
+
+<body><center>
+水木清华 -- 文章阅读 [讨论区: Python]<hr color="green"><table width="610" border="1">
+<tbody><tr><td>
+<pre>发信人: <a href="http://www.smth.edu.cn/cgi-bin/bbs/bbsqry?userid=zerglingrun">zerglingrun</a> (狗狗快跑), 信区: Python       
+标  题: python菜鸟上路记（1）
+发信站: BBS 水木清华站 (Thu Nov 14 13:11:36 2002)
+
+按照精华区里面的指导，建立了fibo.py文件，放在python根目录下
+如下：
+ # Fibonacci numbers module
+ def fib(n):
+     a, b = 0, 1
+     while b &lt; n:
+         print b,
+         a, b = b, a+b
+ def fib2(n):
+     result = []
+     a, b = 0, 1
+     while b &lt; n:
+         result.append(b)
+         a, b = b, a+b
+     return result
+
+然后在python shell里面敲入
+&gt;&gt;&gt; import fibo
+结果显示：
+Traceback (most recent call last):
+  File "&lt;pyshell#39&gt;", line 1, in ?
+    import fibo
+  File "D:\Program Files\Python22\mywork\fibo.py", line 3
+    def fib(n):    # write Fibonacci series up to n
+    ^
+SyntaxError: invalid syntax
+
+既然不能import,那就自己动手，敲进去，则可以调用，
+但是python shell一关闭，所有东西全都没了，why?
+这是什么错误？
+python可不可以像java一样package,我不想把所有文件都放在根目录下，
+看精华区里面说建立一个PYTHONPATH的环境变量就行了，
+但是在我这不灵，
+请各位大虾指教一个，入门就行
+谢谢！
+--
+
+<font class="c37"><font class="c34">※ 来源:·BBS 水木清华站 smth.org·[FROM: 61.48.1.9]<font class="c37">
+</font></font></font></pre></td></tr>
+</tbody></table><hr>
+[<a href="http://www.smth.edu.cn/cgi-bin/bbs/bbsfwd?board=Python&amp;file=M.1037250695.Z0">转寄/推荐</a>][<a href="http://www.smth.edu.cn/cgi-bin/bbs/bbsccc?board=Python&amp;file=M.1037250695.Z0">转贴</a>][<a href="http://www.smth.edu.cn/cgi-bin/bbs/bbscon?board=Python&amp;file=M.1037242622.c0&amp;num=2453">上一篇</a>][<a href="http://www.smth.edu.cn/bbsdoc.php?board=Python">本讨论区</a>][<a href="http://www.smth.edu.cn/cgi-bin/bbs/bbscon?board=Python&amp;file=M.1037253062.A&amp;num=2455">下一篇</a>][<a href="http://www.smth.edu.cn/cgi-bin/bbs/bbspst?board=Python&amp;file=M.1037250695.Z0&amp;userid=zerglingrun&amp;title=Re:%20python%B2%CB%C4%F1%C9%CF%C2%B7%BC%C7%A3%A81%A3%A9&amp;refilename=M.1037250695.Z0">回文章</a>][<a href="http://www.smth.edu.cn/cgi-bin/bbs/bbstfind?board=Python&amp;title=python%B2%CB%C4%F1%C9%CF%C2%B7%BC%C7%A3%A81%A3%A9">同主题阅读</a>][<a href="javascript:history.go(-1)">快速返回</a>]
+</center>
+
+</body></html>

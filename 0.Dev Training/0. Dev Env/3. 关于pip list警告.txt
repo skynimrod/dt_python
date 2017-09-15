@@ -1,0 +1,23 @@
+. pip 9.0.1 , 使用pip list 出现警告
+
+(env4) F:\F_3_test\5_Tmp\tasktest\demoapp>pip list
+DEPRECATION: The default format will switch to columns in the future. You can us
+e --format=(legacy|columns) (or define a format=(legacy|columns) in your pip.con
+f under the [list] section) to disable this warning.
+amqp (1.4.9)
+anyjson (0.3.3)
+
+  解决:
+
+      https://www.zhihu.com/question/52730764/answer/132143084
+
+      如果你的PIP版本是9.0.1话，可以在~/pip/pip.conf配置文件中加入下面的语句，避免这类警告：
+
+    [list]
+    format=columns
+
+Win7系统自己创建%APPDATA%\pip\pip.ini文件，添加如下文件内容：
+[list]
+format=columns
+
+例如：C:\ProgramData\pip\pip.ini

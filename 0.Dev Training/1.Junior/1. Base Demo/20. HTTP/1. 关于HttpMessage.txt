@@ -1,0 +1,5 @@
+http://www.jb51.net/article/109852.htm
+
+HTTPMessage 实例持有从 HTTP response 返回的头部。
+
+哈希表方式访问其内容. 

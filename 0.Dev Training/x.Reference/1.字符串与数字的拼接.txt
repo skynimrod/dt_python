@@ -1,0 +1,8 @@
+. Python 3 之前的版本适用的是反引号 ` `, 3 之后的版本适用的是repr
+
+  例如
+
+  >>> temp = 42
+  >>> println "The temperature is " + `temp`    # 这样才可以把数字与字符串进行拼接后显示出来, 否则会出错
+
+  repr() 也就是` ` . 

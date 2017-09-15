@@ -1,0 +1,37 @@
+.1. 运行4_bayes_update.py 的时候出现下面的错误
+
+ (env3) E:\E_1_Developement Tools\7 Python\0.Dev Training\m.Matplotlib Example\0.
+animation example>python 4_bayes_update.py
+Traceback (most recent call last):
+  File "4_bayes_update.py", line 4, in <module>
+    import scipy.stats as ss
+  File "C:\Users\my\Envs\env3\lib\site-packages\scipy\__init__.py", line 61, in
+<module>
+    from numpy._distributor_init import NUMPY_MKL  # requires numpy+mkl
+ImportError: cannot import name 'NUMPY_MKL'
+
+  分析:
+
+      from numpy._distributor_init import NUMPY_MKL  # requires numpy+mkl
+
+     这句话的意思是需要 numpy+mkl (numpy with Intel Math Kernel Library). 因为numpy 使用pip安装的,scipy 使用whl直接安装的.需要 numpy+mkl.
+
+     从下面的url 下载安装 numpy+mkl 即可.
+
+          http://www.lfd.uci.edu
+
+. 2. ImportError: No module named 'numpy'
+
+   命名安装了 numpy 包, 却有这个提示. 因为 Python 路径的问题导致.  直接在命令行下面运行py文件有时会有这个问题. 用Python 来执行py文件就会没问题了.
+
+(env3) E:\E_1_Developement Tools\7 Python\0.Dev Training\m.Matplotlib Example\0.
+animation example>python 8_histogram.py
+Hello World!
+
+(env3) E:\E_1_Developement Tools\7 Python\0.Dev Training\m.Matplotlib Example\0.
+animation example>8_histogram.py
+Traceback (most recent call last):
+  File "E:\E_1_Developement Tools\7 Python\0.Dev Training\m.Matplotlib Example\0
+.animation example\8_histogram.py", line 1, in <module>
+    import numpy as np
+ImportError: No module named 'numpy'

@@ -1,0 +1,7 @@
+. 图形中的网格属性默认是关闭的, 但可以很简单的打开和定制化. 不带参数调用 matplotlib.pyplot.grid() 会切换网格的现实状态. 另外一些控制参数如下:
+
+  1. which : 指定绘制的网格刻度类型( major、minor 或者 both )
+
+  2. axis : 指定绘制哪组网格线 ( both、x 或者 y )
+
+  坐标轴通常由matpllotlib.pyplot.axis()控制.坐标轴在内部实现上由几个python 类来表示. 其中一个父类是 matplotlib.axes.Axes, 包含了操作坐标轴的大多数方法。 单独一个坐标轴由 matplotlib.axis.Axis 类来表示, matplotlib.axis.XAxis 表示x轴, matplotlib.axis.YAxis 表示y 轴.

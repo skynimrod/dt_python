@@ -1,0 +1,31 @@
+. def hello(name):
+      return 'hello, ' + name + '!'
+
+. >>> print hello('world')
+  hello, world!
+  >>> print hello('Gumby')
+  hello, Gumby!
+
+. 斐波拉切数列
+
+  def fibs( num ):
+      return = [0, 1]
+      for i in range(num -2) :
+          result.append( result[-2] + result[-1])
+      return return
+
+  >>> fibs(10)
+  [0,1,1,2,3,5,8,13,21,34]
+  >> fibs(15)
+  [0,1,1,2,3,5,8,13,21,34,55,89,144,233,377]
+
+. 文档化函数
+
+  def square(x):
+      'Calculates the square of the number x.'
+      return x*x
+
+  文档字符串可以用下面的方式访问
+
+  >>> squrare.__doc____
+  'Calcluates the square of the number x.'

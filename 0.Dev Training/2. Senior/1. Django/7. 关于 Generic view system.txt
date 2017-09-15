@@ -1,0 +1,86 @@
+参见:
+
+    https://docs.djangoproject.com/en/1.10/intro/tutorial04/
+
+    https://docs.djangoproject.com/en/1.10/topics/class-based-views/
+
+. 主要是为了减少代码量, 按下面3个步骤进行修改
+
+  1. 转变URLconf 配置
+
+  2. 删除一些旧的, 不需要的views
+
+  3. 基于Django's 的generic views 的新views
+
+. 1. 修改URLconf
+
+  app1/urls.py
+
+from django.conf.urls import url
+
+from . import views
+
+app_name = 'polls'
+urlpatterns = [
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),
+    url(r'^(?P<pk>[0-9]+)/results/$', views.ResultsView.as_view(), name='results'),
+    url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
+]
+
+# 注意, 第2，3条url规则中的正则表达式,  <question_id> 用<pk>替代了。。
+
+. 2. 修改 views
+
+   删除 index, detail, results 等views 的代码, 用 Django's generic views 替代. 如下:
+
+app1/views.py
+
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.views import generic
+
+from .models import Choice, Question
+
+
+class IndexView(generic.ListView):      # 注意， 用的是class
+    template_name = 'app1/index.html'
+    context_object_name = 'latest_question_list'
+
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.order_by('-pub_date')[:5]
+
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'app1/detail.html'
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'app1/results.html'
+
+
+def vote(request, question_id):
+    ... # same as above, no changes needed.
+
+
+说明:
+   
+     这儿我们用了两个generic views: ListView 和 DetailView.   可以看到 代码简化了很多.
+
+     ListView 表示 显示对象列表
+
+     DetailView  表示 显示特定对象的详细信息
+
+     每一个generic view 需要知道它基于什么model. 这个用model 属性 
+
+     DetailView  generic view 从 URL 的pk 来获取primary key 值
+
+. 缺省的, DetailView generic view 使用模板名称为 <app name>/<model name>_detail.html.  例如: app1/question_detail.html
+
+  template_name 属性用来告诉 Django  用制定的模板名称替代 缺省的模板名称.
+
+  对ListView ， 自动产生的context 变量为 question_list.  也可以用context_object_name 属性来制定用来替代的context变量 last_question_list。 

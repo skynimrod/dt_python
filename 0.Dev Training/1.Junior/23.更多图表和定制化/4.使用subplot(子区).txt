@@ -1,0 +1,42 @@
+. subplot 派生自axes, 位于 subplot 实例的规则网格中.
+
+. 准备工作
+
+      子区的基类是 matplotlib.axes.SubplotBase.  子区 是matplotlib.axes.Axes 的实例, 但提供了helper 方法来生成和操作图表中的一系列Axes.
+
+      有一个matplotlib.figure.SubplotParams 类, 包括 subplot 的所有参数. 尺寸是被归一化的图表的宽度或者高度. 我们已经知道, 如果不指定任何定制化的值, subplot将会从 rc 参数中读取参数值.
+
+      脚本层(matplotlib.pyplot)有操作子区的一些helper 方法.
+
+      matplotlib.pyplot.subplots 用来方便的创建普通布局的子区. 我们可以指定网格的大小----子区网格的行数和列数.
+
+      我们可以创建共享x或者 y轴 的子区, 者通过使用sharex 或者 sharey 关键字参数来完成.  sharex 参数可以设置为True, 这样 x轴就被所有的子区共享. 这样一来, 刻度标签纸在最后一行的子区上可见. 他们也可以被设置为字符串, 枚举值如row、col、all 或者none.  值 all 和 True 相同, 值 none 和 False 相同. 如果设置为row, 则每一个子区行共享x轴坐标; 如果设置为col, 则每一个子区列共享y轴坐标. matplotlib.pyplot.subplots方法返回一个( fig, ax) 元组, 其中 ax可以是一个坐标轴实例; 当创建多个子区时, ax 是一个坐标轴实例的数组.
+
+      我们用matplotlib.pyplot.subplots_adjust 来调整子区的布局. 关键字参数指定了表中子区的坐标(left, right, bottom和 top), 其值 是归一化的图标大小的值. 可以用wspace 和 hspace 参数指定子区见空白区域的大小, 参数值为相应宽度和高度的归一化值.
+
+. 例子代码: 3_subplotTest.py
+
+  定义了网格的几何形状和子区的位置. 注意位置是基于0的, 而不是像在plot.subplot() 中的那样基于1. 也可以使用colspan 和rowspan来让子区跨越给定网格中的多个行和列. 例如, 创建一个图表, 通过subplot2grid 添加不同的子区布局, 并重新配置刻度标签大小. 
+
+. 工作原理
+
+      想subplot2grid方法传入形状参数、位置(loc)参数和可选的rowspan 及colspan 参数. 这里一个重要的区别是位置从0开始索引, 而 figure.add_subplot 从1 开始索引.
+
+. 补充说明
+
+      以下是一个以另一种方式定制化当前axes 或者 subplot 的例子
+
+      axes = fig.add_subplot( 111 )
+      rectangle = axes.patch
+      rectangle.set_facecolor('blue')
+
+      这里我们看到每一个axes 实例包含了一个引用 rectangle 实例的patch 字段, 此字段代表当前 axes 实例的背景. 我们可以更新该实例的属性, 进而更新当前axes 的背景. 例如， 可以改变其颜色, 也可以加载一副图像以添加水印保护.
+
+      也可以先创建一个补片, 然后把它添加到axes 的背景上.
+
+      fig = plt.figure()
+      axes = fig.add_subplot(111)
+      rect = matplotlib.patches.Rectangle( (1, 1), width = 6, height = 12 )
+      axes.add_path( rect )
+      # we have to manully force a figure draw
+      axes.figure.canvas.draw()

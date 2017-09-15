@@ -1,0 +1,100 @@
+. 一. 下载安装Python 对应版本  (参见Readme.txt)
+
+. 二. 安装 virtualEnv 和 virtualenvwrapper (参见 Junior/virtualEnv/Readme.txt )
+
+     pip install virtualenv virtualenvwrapper-win
+
+     然后就 可以创建一些开发环境了. 主要的命令有:
+
+  1. mkvirtualenv <name>
+
+  2. lsvirtualenv
+
+  3. rmvirtualenv <name>
+
+  4. workon [<name>]
+
+  5. deactivate
+
+  6. add2virtualenv <full or relative path>   
+
+  7. 创建项目project
+
+     mkproject
+
+  传统命令
+
+  1. cdproject
+
+  2. cdsitepackages
+
+  3. cdvirtualenv
+
+  4. lssitepackages
+
+  5. setprojectdir <full or relative path>
+
+  6. toggleglobalsitepackages
+
+  7. whereis <file>       
+
+. 三、创建并进入目标开发环境, 安装对应的包, 主要是 numpy, scipy, Matplotlib等等.
+
+  0. 更新pip
+
+     c:\>...>python -m pip install --upgrade pip
+
+  1. 先不要进入对应的开发环境, 查看现在系统安装了哪些包
+ 
+     pip list
+
+     发现安装了很多包了.
+
+mysql-connector-python (2.1.3)
+pbr (1.10.0)
+pip (1.5.6)
+PyYAML (3.12)
+setuptools (2.1)
+six (1.10.0)
+stevedore (1.17.1)
+virtualenv (15.0.3)
+virtualenv-clone (0.2.6)
+virtualenvwrapper-win (1.2.1)
+
+  2. 创建并进入对应的开发环境, 安装需要的包, 比如numpy, scipy, matplotlib,等
+
+     mkvirtualenv env2  (一般创建完后自动就进入该开发环境了) 
+
+     在开发环境下查看有哪些包  pip list
+
+     发现开发环境下只有以下三个包
+
+        pip (8.1.2)
+        setuptools (28.0.0)
+        wheel (0.30.0a0)
+
+     说明每个开发环境是'干净'的.    
+
+     现在分步安装numpy, scipy, matplotlib, PIL， SymPy (每次安装完最好用pip list 查看下现有的包)
+
+     pip install numpy
+
+     pip install Django==1.10.1
+
+     pip install matplotlib    (会自动安装matplotlib 需要的其他包,比如 cycler, pyparsing, ptyhon-dateutil, pytz, six)
+
+     pip install wheel      这个用来支持安装whl 文件的, 之后pip install 包名字.whl 即可安装某模块包   http://www.lfd.uci.edu/~gohlke/pythonlibs/
+
+     pip install scipy  失败   参见  http://zhidao.baidu.com/link?url=llHkXLe3l2paOXVz-_NLHOYl7R5Tk7VJ5362XvfiRXenMMgXo80HiPM7RxzaY-ACRxW_FV20TsQAcJnNfBH2jeKD-IVXp529qP7SHjzseWC
+
+          先下载scipy的whl文件(http://www.lfd.uci.edu/~gohlke/pythonlibs/ 或者官网下载), 然后pip install scipy-0.18.1-....whl 即可.
+
+     pip install SymPy    利用SymPy 来简化 代数表达式 或 做 微分运算, 其功能类似于 Mathematica 和 Maple
+
+     pip install django-bootstrap-toolkit   将bootstrap 作为django 的一个插件的一个包  https://github.com/dyve/django-bootstrap-toolkit
+
+                          这个可以放弃了, 已经3年没有更新了, 对应的是老版本的Django以及Bootstrap
+
+     pip install pymysql     Python 3  对mysql 的支持
+
+     ## 具体Django中如何连接数据库等后续应用的操作, 参见Django 部分文档.   https://docs.djangoproject.com/en/1.10/intro/

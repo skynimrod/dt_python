@@ -1,0 +1,11 @@
+. 1. 由于目标计算机积极拒绝，无法连接。.
+
+     这个问题的原因是没有启动消息队列服务器. 对于Celery('report_tasks', broker='amqp://quest@localhost//)而言, 启动RabbitMQ即可.
+
+[2016-10-30 09:28:42,147: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [WinError 10061] 由于目标计算机积极拒绝，无法连接。.
+Trying again in 8.00 seconds...
+
+     解决办法:
+
+         安装RabbitMQ（erlang）后启动. 具体参见 消息中间件部分RabbitMQ.
+     

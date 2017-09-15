@@ -1,0 +1,192 @@
+参见:
+
+    https://docs.djangoproject.com/en/1.10/topics/templates/
+
+    https://docs.djangoproject.com/en/1.10/ref/templates/language/
+
+    https://docs.djangoproject.com/en/1.10/intro/tutorial03/
+
+    http://blog.csdn.net/u014368609/article/details/51659175              很好   django模板使用心得
+
+    https://docs.djangoproject.com/en/1.10/ref/templates/builtins/        Django 模板内嵌标签的使用
+
+    http://blog.csdn.net/heybob/article/details/50547552                  Django数据库queryset操作    字段的后缀操作
+
+    http://www.oschina.net/translate/django-querysets                     有效使用Django的QuerySets
+
+    https://segmentfault.com/q/1010000005615987                           django 模版中 变量引用变量 被当作字符串处理，而不是变量值？
+
+    http://www.jb51.net/article/70077.htm                                 使用Django的模版来配合字符串翻译工作
+
+    http://blog.xsudo.com/archives/973.html                               django模板内的字符串截取
+
+.  如果要修改页面的话, 在view 中设计页面很麻烦. Django 的模板系统能
+
+. 在应用下创建一个templates 子目录, 比如 app1/templates/.   Django 会在那儿找模板.
+
+. 项目的TEMPLATES 设置描述了 Django 载入和渲染模板.   DjangoTemplates 的缺省设置在APP_DIRS 是TRUE.  按照约定俗成DjangoTemplates 在INSTALL_APPS 的 子目录"templates"查找模板.
+  在/templates
+/子目录下面创建一个与应用同名的子目录, 比如 /app1/templates/app1/,在该目录下面创建一个index.html. /app1/templates/app1/index.html.  因为app_directories 模板载入工作就是上面的方式, 而在Django中对于模板的引用就可以简单为 app1/index.html
+
+. app1/templates/app1/index.html
+
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li><a href="/app1/{{ question.id }}/">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No app1 are available.</p>
+{% endif %}
+
+. polls/views.py
+
+from django.http import HttpResponse
+from django.template import loader
+
+from .models import Question
+
+
+def index(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    template = loader.get_template('polls/index.html')
+    context = {
+        'latest_question_list': lastest_question_list,
+    }
+    return HttpResponse(template.render(context, request))
+
+. 上面的用法有更加方便的替代用法
+
+polls/views.py
+
+from django.shortcuts import render
+
+from .models import Question
+
+
+def index(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    context = {'latest_question_list': latest_question_list}
+    return render(request, 'polls/index.html', context)
+
+. 关于404 错误
+
+polls/views.py
+
+from django.http import Http404
+from django.shortcuts import render
+
+from .models import Question
+# ...
+def detail(request, question_id):
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question does not exist")
+    return render(request, 'app1/detail.html', {'question': question})
+
+上面对应的detail.html 模板: app1/templates/app1/detail.html
+
+{{ question.id }} : {{ question.question_text }} </br>
+
+注意: 模板的{{ 的两个大括号之间不能有空格等, 必须是紧连的, 否则就不会解析传递的对象，而是作为文字字符进行处理. {{ }} 之间只能放一个对象或变量.
+
+上面的views.py  使用 Http404 对象有个更好的替代方案, 就是使用shortcuts 中的get_object_or_404对象, 应用更加简单
+
+polls/views.py
+
+from django.shortcuts import get_object_or_404, render
+
+from .models import Question
+# ...
+def detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'app1/detail.html', {'question': question})
+
+. 修改 detail.html 模板
+
+<h1>{{ question.question_text }}</h1>
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }}</li>
+{% endfor %}
+</ul>
+
+  ## 上面的question.choice_set.all  是如何来的??? 
+
+. 优化 模板 硬编码hardcoded 中的 路径问题
+
+ 原模板
+
+<li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+
+ 优化后, 利用 {% %} 来处理路径问题.
+
+<li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+
+注意, app1/urls.py 中的name='detial' 的定义
+
+url(r'^(?P<question_id>[0-9]+)/$', views.detail, name='detail'),
+
+  由于是在app1 路径下面, 那 优化后的代码中 {% url 'detail' question.id %} 实际上就是 app1/question.id, 但是app1 是灵活的, 自动获取当前应用路径
+
+  经过这样的优化, 如果要修改访问路径:
+
+  app1/specifics/5/ ， 那么就不用修改模板detail.html， 而只需要修改 app1/urls.py 中name='detail' 的定义即可   添加'specifics'
+
+  url(r'^specifics/(?P<question_id>[0-9]+)/$', views.detail, name='detail'),
+
+. 在urls.py 中添加命名空间, 这样就能在多个应用中区分了, 只需要在urls.py urlpatterns 之前添加 app_name='app1' 。如下:
+
+app1/urls.py
+
+from django.conf.urls import url
+
+from . import views
+
+app_name = 'app1'
+urlpatterns = [
+    url(r'^$', views.index, name='index'),
+    url(r'^(?P<question_id>[0-9]+)/$', views.detail, name='detail'),
+    url(r'^(?P<question_id>[0-9]+)/results/$', views.results, name='results'),
+    url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
+
+]
+
+这样就可以将app1/index.html 模板进行更改
+
+polls/templates/polls/index.html    原来的代码如下
+
+<li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+
+修改后如下  使用了命名空间
+
+polls/templates/polls/index.html
+
+<li><a href="{% url 'app1:detail' question.id %}">{{ question.question_text }}</a></li>
+
+--------------
+
+https://docs.djangoproject.com/en/1.10/ref/csrf/
+
+. 一个包含最少的基本元素的典型的模板:
+
+{% extends "base_generic.html" %}
+
+{% block title %}{{ section.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ section.title }}</h1>
+
+{% for story in story_list %}
+<h2>
+  <a href="{{ story.get_absolute_url }}">
+    {{ story.headline|upper }}
+  </a>
+</h2>
+<p>{{ story.tease|truncatewords:"100" }}</p>
+{% endfor %}
+{% endblock %}
+
+

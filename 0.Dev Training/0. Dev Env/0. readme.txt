@@ -1,0 +1,189 @@
+. 官网地址
+
+  1. WinPython
+
+     https://winpython.github.io/            WinPython 的下载地址
+
+     WinPython 提供了一个安装扩展库的WinPython Control Panel 界面程序, 通过它可以安装Python的各种扩展库. 可以通过下面的链接下载已经编译好的二进制扩展库安装包, 然后通过WinPython Control Panel 来安装.
+
+     http://www.lfd.uci.edu/~gohlke/pythonlibs/     下载各种Python 扩展库的Windows 安装文件
+          
+     Welcome to Python.org        官网      https://www.python.org/downloads/windows/
+
+. Python 2 与 Python 3 的区别
+
+  Python 2.x  是赠品,  Python 3.x 是礼品 也是未来的语言. 
+
+  Python 2.7 是  2系列的最后版本.  
+
+  Python 3.4 才可以在XP上运行, 3.5 以上都是Vista 或更新的版本
+
+. 执行 .py 脚本
+
+  路径中增加Python 的执行路径
+
+  Path=C:\Python27\;C:\Python27\Scripts;
+
+  一般安装Python 的时候会提示是否要添加到路径中. 选择添加到路径的选项即可.
+
+ 在.py 文件所在目录下执行命令行:
+
+  > python xxxx.py
+
+. 让脚本想普通程序一样运行
+
+  
+
+  Unix 环境下, py 文件第一行增加下面的内容.
+
+  #!/usr/bin/env python
+
+  然后改变文件的属性为可执行
+
+  # chmod a+x hello.py
+
+  # hello.py
+
+  就可以执行py 文件了.
+
+.     实践：在Windows上安装NumPy、Matplotlib、SciPy和IPython
+
+   http://book.2cto.com/201401/39327.html
+
+. 关于pip
+
+  奇怪， pip 不记得啥时候安装的, 但是突然就可以用了.  然后查看 path, 发现安装Python 2.7后增加了2个路径:
+
+   C:\Python27\;C:\Python27\Scripts;
+
+  查看这2个路径， 发现pip.exe 在C:\Python27\Scripts;    所以 pip 命令就可以用了.  同样, cython.exe, cygdb.exe 也在这个路径下面.
+  
+
+   刚装完Python 2.7.10的时候, Scripts子目录中没有pip.exe.  从下面的URL 下载Pip
+
+        https://pypi.python.org/pypi/pip/
+
+   或者  下载get-pip.py 
+  
+        https://bootstrap.pypa.io/get-pip.py
+
+   然后运行:
+
+        python get-pip.py
+
+   然后就成功安装了Pip, 同时也安装了setuptools 和 wheel. 
+
+   C:\Python27\Scripts>easy_install pip
+Searching for pip
+Best match: pip 8.1.2
+Adding pip 8.1.2 to easy-install.pth file
+Installing pip-script.py script to c:\python27\Scripts
+Installing pip.exe script to c:\python27\Scripts
+Installing pip.exe.manifest script to c:\python27\Scripts
+Installing pip3.5-script.py script to c:\python27\Scripts
+Installing pip3.5.exe script to c:\python27\Scripts
+Installing pip3.5.exe.manifest script to c:\python27\Scripts
+Installing pip3-script.py script to c:\python27\Scripts
+Installing pip3.exe script to c:\python27\Scripts
+Installing pip3.exe.manifest script to c:\python27\Scripts
+
+Using c:\python27\lib\site-packages
+Processing dependencies for pip
+Finished processing dependencies for pip
+
+C:\Python27\Scripts>
+
+
+  -------------------上面说的刚装完Python 2.7.12 中没有pip 是错误的, 可能是由于之前的卸载有残留， 造成新安装地Python 2.7.12 中缺了很多内容, 包括pip....  事实上， 卸载Python 旧版本之后，将之前的目录全部删除，然后将之前的库也通过安装与卸载程序卸载, 然后再安装新版本Python 2.7.12, 那么就会发现Scripts 子目录中已经包含Pip.exe.  
+
+  如果已经单独安装了 pip8.1.2, 那么就会比Python 2.7.12 中自带的pip 8.1.1 版本高, 会出现如下提示， 按照提示升级即可。 
+
+C:\Python27\Scripts>pip install numpy
+Collecting numpy
+  Using cached numpy-1.11.1-cp27-none-win32.whl
+Installing collected packages: numpy
+Successfully installed numpy-1.11.1
+You are using pip version 8.1.1, however version 8.1.2 is available.
+You should consider upgrading via the 'python -m pip install --upgrade pip' comm
+and.
+
+C:\Python27\Scripts>python -m pip install --upgrade pip
+
+
+安装 numpy 的时候, 可能会提示已经有了， 表示python 2.7.12 已经包含了numpy 库。 可以用 pip 查看
+
+C:\Python27\Scripts>pip show numpy
+---
+Metadata-Version: 2.0
+Name: numpy
+Version: 1.11.1
+Summary: NumPy: array processing for numbers, strings, records, and objects.
+Home-page: http://www.numpy.org
+Author: NumPy Developers
+Author-email: numpy-discussion@scipy.org
+Installer: pip
+License: BSD
+Location: c:\python27\lib\site-packages
+Requires:
+Classifiers:
+  Development Status :: 5 - Production/Stable
+  Intended Audience :: Science/Research
+  Intended Audience :: Developers
+  License :: OSI Approved
+  Programming Language :: C
+  Programming Language :: Python
+  Programming Language :: Python :: 2
+  Programming Language :: Python :: 2.6
+  Programming Language :: Python :: 2.7
+  Programming Language :: Python :: 3
+  Programming Language :: Python :: 3.2
+  Programming Language :: Python :: 3.3
+  Programming Language :: Python :: 3.4
+  Programming Language :: Python :: 3.5
+  Programming Language :: Python :: Implementation :: CPython
+  Topic :: Software Development
+  Topic :: Scientific/Engineering
+  Operating System :: Microsoft :: Windows
+  Operating System :: POSIX
+  Operating System :: Unix
+  Operating System :: MacOS
+
+C:\Python27\Scripts>pip show scipy
+
+C:\Python27\Scripts>
+
+由于scipy 0.18.0 安装失败， 所以查看的时候就没有信息返回.  暂时用Scipy 0.16.0 替代. 在查看Scipy 库， 如下:
+
+C:\Python27\Scripts>pip show scipy
+---
+Metadata-Version: 1.1
+Name: scipy
+Version: 0.16.0
+Summary: SciPy: Scientific Library for Python
+Home-page: http://www.scipy.org
+Author: SciPy Developers
+Author-email: scipy-dev@scipy.org
+License: BSD
+Location: c:\python27\lib\site-packages
+Requires:
+Classifiers:
+  Development Status :: 4 - Beta
+  Intended Audience :: Science/Research
+  Intended Audience :: Developers
+  License :: OSI Approved
+  Programming Language :: C
+  Programming Language :: Python
+  Programming Language :: Python :: 3
+  Topic :: Software Development
+  Topic :: Scientific/Engineering
+  Operating System :: Microsoft :: Windows
+  Operating System :: POSIX
+  Operating System :: Unix
+  Operating System :: MacOS
+
+C:\Python27\Scripts>
+
+
+同样, PIL 的安装也只能通过下载对应的PIL 安装包来安装， 不能通过PIP  install PIL 来安装。 
+. 显示当前Python 版本以及当前开饭环境有哪些库？？
+ 

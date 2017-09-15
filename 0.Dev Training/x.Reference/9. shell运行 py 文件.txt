@@ -1,0 +1,55 @@
+. Python 2 中用 execfile, python 3 中用 open(), compile() 和exec() 替代了.
+
+>>> import os
+>>> f = open("manage.py")
+>>> exec(f.read())
+
+Type ' help <subcommand>' for help on a specific subcommand.
+
+Available subcommands:
+
+[auth]
+    changepassword
+    createsuperuser
+
+[django]
+    check
+    compilemessages
+    createcachetable
+    dbshell
+    diffsettings
+    dumpdata
+    flush
+    inspectdb
+    loaddata
+    makemessages
+    makemigrations
+    migrate
+    sendtestemail
+    shell
+    showmigrations
+    sqlflush
+    sqlmigrate
+    sqlsequencereset
+    squashmigrations
+    startapp
+    startproject
+    test
+    testserver
+
+[guardian]
+    clean_orphan_obj_perms
+
+[sessions]
+    clearsessions
+
+[staticfiles]
+    collectstatic
+    findstatic
+    runserver
+>>> exec(f.read()) runserver
+  File "<stdin>", line 1
+    exec(f.read()) runserver
+                           ^
+SyntaxError: invalid syntax
+>>>

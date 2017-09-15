@@ -1,0 +1,25 @@
+. 1. zlib.error: Error -3 while decompressing data: incorrect header check
+
+    参见:  
+
+         http://blog.csdn.net/bytxl/article/details/21278249
+
+         http://stackoverflow.com/questions/3122145/zlib-error-error-3-while-decompressing-incorrect-header-check   上面的中文文章就是来自这儿
+
+    解压缩的时候, 检测到头部不正确. 这是因为你的数据可能是如下格式:
+
+      deflate, zlib, gzip
+
+    需要分别按如下方式来解压缩
+
+      deflate : wbits = -zlib.MAX_WBITS
+
+      zlib:     wbits = zlib.MAX_WBITS
+
+      gzip:     wbits = zlib.MAX_WBITS | 16
+
+    当然, 还有头部自动检测的解压方法: 
+
+    参考代码如下:
+
+       

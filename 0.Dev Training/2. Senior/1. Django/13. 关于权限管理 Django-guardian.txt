@@ -1,0 +1,95 @@
+参见:
+
+    https://djangopackages.org/packages/p/django-guardian/    这个更好, 有下载的地址Pypi, 也有文档地址, ReadTheDocs
+
+    https://github.com/django-guardian/django-guardian     这个有项目使用例子
+
+    https://docs.djangoproject.com/en/1.10/topics/auth/default/     Django  自带的权限系统
+
+    http://www.cnblogs.com/esperyong/archive/2012/12/21/2827841.html   这篇写得好, 介绍的容易理解
+
+. django-guardian 是基于django admin 权限系统之上实现的, 完成了对象级别的权限控制. 
+
+. 1. 安装
+
+     pip install django-guardian
+
+. 2. 按照文档说明,命令行下面执行下面的语句
+
+5.2.2  Assign object permissions
+We    can    assign    permissions    for    any    user/group    and    object    pairs    using    same,
+convenient    function:
+guardian.shortcuts.assign_perm()
+.
+For user
+Continuing our example we now can allow Joe user to view some task:
+>>> from django.contrib.auth.models import User
+>>> boss = User.objects.create(username='Big Boss')
+>>> joe = User.objects.create(username='joe')
+>>> task = Task.objects.create(summary='Some job', content='', reported_by=boss)
+>>> joe.has_perm('view_task', task)
+
+ 但是执行 from django.contrib.auth.models import User 就出错了
+
+>>> from django.contrib.auth.models import User
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\contrib\auth\models.py",
+line 4, in <module>
+    from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\contrib\auth\base_user.py
+", line 52, in <module>
+    class AbstractBaseUser(models.Model):
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\contrib\auth\base_user.py
+", line 53, in AbstractBaseUser
+    password = models.CharField(_('password'), max_length=128)
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\db\models\fields\__init__
+.py", line 1043, in __init__
+    super(CharField, self).__init__(*args, **kwargs)
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\db\models\fields\__init__
+.py", line 166, in __init__
+    self.db_tablespace = db_tablespace or settings.DEFAULT_INDEX_TABLESPACE
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\conf\__init__.py", line 5
+3, in __getattr__
+    self._setup(name)
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\conf\__init__.py", line 3
+9, in _setup
+    % (desc, ENVIRONMENT_VARIABLE))
+django.core.exceptions.ImproperlyConfigured: Requested setting DEFAULT_INDEX_TAB
+LESPACE, but settings are not configured. You must either define the environment
+ variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing s
+ettings.
+>>>
+
+然后通过命令行设置 DJANGO_SETTINGS_MODULE, 仍然出现错误
+
+>>> import os
+>>> os.environ.setdefault("DJANGO_SETTINGS_MODULE","mysite.settings")
+'mysite.settings'
+>>> from django.contrib.auth.models import User
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\contrib\auth\models.py",
+line 4, in <module>
+    from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\contrib\auth\base_user.py
+", line 52, in <module>
+    class AbstractBaseUser(models.Model):
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\db\models\base.py", line
+105, in __new__
+    app_config = apps.get_containing_app_config(module)
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\apps\registry.py", line 2
+37, in get_containing_app_config
+    self.check_apps_ready()
+  File "C:\Users\my\Envs\env2\lib\site-packages\django\apps\registry.py", line 1
+24, in check_apps_ready
+    raise AppRegistryNotReady("Apps aren't loaded yet.")
+django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
+>>>
+
+
+上面的语句在 py 文件中就没有问题, 而且通过 boss = User.objects.create(username='Joe') 添加的数据在 auto_user 表中也有记录体现.....
+
+. 3. 只能给Model 对象 赋予权限,  View 等对象不能设置权限, 否则会提示对象类型不匹配.
+
+  

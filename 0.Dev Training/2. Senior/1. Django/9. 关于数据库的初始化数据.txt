@@ -1,0 +1,112 @@
+参见:
+
+    http://blog.csdn.net/python_tty/article/details/51679625
+
+    http://www.cnblogs.com/noway-neway/p/5275138.html     关于Model 的属性
+
+. 在Django 1.10.1 中 支持 fixtures
+
+  在应用目录下建一个子目录fixtures, 例如: polls/fixtures/ . 创建用来初始化数据的fixture文件, 然后用manage.py loaddata 来进行那个数据初始化.
+
+. Django 会按三种方式来搜寻fixtures 的位置:
+
+  1. 每个安装后的应用的fixtures 子目录
+
+  2. 在FIXTURE_DIRS 设置中的任何目录名称
+
+  3. fixture 命名的相对路径
+
+. django-admin loaddata mydata.json
+
+  如果没有后缀名, 就会自动按照上面的顺序搜索
+
+  当fixture文件被执行后, 数据就保存到数据库了. 
+
+  fixture json 文件格式, 可以先用manage.py dumpydata 来备份数据, 然后查看备份数据的格式.
+
+(env2) F:\F_3_test\3_Python\mysite>manage.py dumpdata --format json -o adams.jso
+n
+[...........................................................................]
+
+(env2) F:\F_3_test\3_Python\mysite>dir
+ 驱动器 F 中的卷是 文档
+ 卷的序列号是 000E-B5CB
+
+ F:\F_3_test\3_Python\mysite 的目录
+
+2016/10/08  19:02    <DIR>          .
+2016/10/08  19:02    <DIR>          ..
+2016/10/08  19:02             6,611 adams.json
+2016/10/08  11:53               804 manage.py
+2016/10/08  11:54    <DIR>          mysite
+2016/10/08  18:09    <DIR>          polls
+               2 个文件          7,415 字节
+               4 个目录 133,254,950,912 可用字节
+
+----------------------------------
+
+polls/fixtures/test.json
+
+[
+    {"model": "polls.question", "fields": {"question_text": "2. What's your name?", "pub_date": "2016-10-06T10:33:26Z"}},
+    {"model": "polls.choice", "fields": {"question": 1, "choice_text": "12", "votes": 0}}
+]
+
+然后运行命令来进行数据初始化
+
+(env2) F:\F_3_test\3_Python\mysite>manage.py loaddata test.json
+Installed 2 object(s) from 1 fixture(s)
+
+(env2) F:\F_3_test\3_Python\mysite>
+
+查看数据, 发现上面json中的数据添加进去了
+
+mysql> select * from polls_choice;
++----+-------------+-------+-------------+
+| id | choice_text | votes | question_id |
++----+-------------+-------+-------------+
+|  1 | 11          |     0 |           1 |
+|  2 | 12          |     0 |           1 |
++----+-------------+-------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from polls_question;
++----+----------------------+----------------------------+
+| id | question_text        | pub_date                   |
++----+----------------------+----------------------------+
+|  1 | 1. What's your name? | 2016-10-08 10:33:26.000000 |
+|  2 | 2. What's your name? | 2016-10-06 10:33:26.000000 |
++----+----------------------+----------------------------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+. 还有一种初始化数据的方法, 就是在授权系统中添加应用数据表, 然后维护测试数据
+
+  https://docs.djangoproject.com/en/1.10/intro/tutorial02/   后面部分
+
+  polls/admin.py
+
+  from django.contrib import admin
+
+from .models import Question, Choice
+
+admin.site.register(Question)
+admin.site.register(Choice)
+
+  这样的话， localhost:8000/admin/ 页面就会显示除了授权系统缺省的权限信息(组/用户)，还有应用POLLS对应的数据库表的数据维护部分.
+
+
+--------------------------------
+
+另外, 如果写成类似 choice_init.sql 的纯sql 模式, 也可以, 直接运行sql即可,现有数据库工具都支持直接运行制定的sql文件.
+
+------------------------------------------------------------------
+
+. 由于手工维护test.json 类似的初始化数据很麻烦,也容易出错(特别是涉及到Foreign Key的情况), 所以用一个调试工具来产生调试数据, 比如test.json
+
+  GenerateTestJson()
+
+--------------------------------
+
+. 对于有中文的数据初始化, 需要将json文件保存为UTF-8 无BOM格式(UE 另存的时候必须是无BOM格式, 否则处理数据会提示无法处理BOM)

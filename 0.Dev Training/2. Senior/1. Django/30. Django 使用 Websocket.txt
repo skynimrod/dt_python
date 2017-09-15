@@ -1,0 +1,5 @@
+. 有不少方式实现Html5 中的websocket
+
+  1. 使用Nodes.js的 socket.io
+
+  2. 

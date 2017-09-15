@@ -1,0 +1,51 @@
+. 定制化网格
+
+      在线条或图表下面添加网格是非常有用的, 它可以帮助肉眼识别出图案的不同, 并且帮助我们比较图表中的图形. 我们需要使用matplotlib.pyplot.grid 来设置网格的可见度、密度和风格, 或者是否显示网格.
+
+      可以打开或关闭网格， 改变网格上的主刻度和次刻度.
+
+. 准备工作
+
+      最常用的网格定制化功能可以用matplotlib.pyplot.grid helper 函数来完成.
+
+      为了看到其交互效果, 运行下面的代码
+
+      >>>import matplotlib.pyplot as plt
+      >>>plt.plot([1, 2, 3, 3.5, 4, 4.3, 3])
+      >>>plt.show()
+
+      ## 奇怪, 上面的运行结果图形与 ipython 环境下的plt.plot([...]) 运行结果图形不一样。。。？？ 难道ipython 环境下是pylab 而不是 pyplot??  再次尝试下面的代码:
+
+      >>> import matplotlib.pylab as plt
+      >>> plt.plot([1, 2, 3, 3.5, 4, 4.3, 3])
+      >>> plt.show()
+
+      运行结果与pyplot 一样, 为什么与 ipython 环境下的运行结果不同？？ 
+
+      现在在同一个图中切换网格:
+
+      in [2]: plt.grid()
+
+      注意 只有在ipython 环境直接运行才有效果，如果在>>>环境， 则需要所有的代码, 因为之前的代码运行结果会出现图形，无法输入后续代码。。。。
+
+      除了只是打开或关闭网格之外, 还能进一步定制化网格的外观.
+
+      可以仅通过主刻度或者次刻度, 或者同时通过两个刻度来操作网格. 因此, 函数参数which可以是 'major'、'minor', 或者'both'. 与此类似, 可以通过参数 axis 分别控制水平刻度和垂直刻度, 参数可以是'x'、'y', 或者 'both'.
+
+      所有其他属性通过kwargs 参数传入, 代表一个 matplotlib.lines.Line2D 实例可以接受的标准属性集合, 比如 color、linestyle 和 linewidth . 这里有一个例子:
+
+      ax.grid( color = 'g', linestyle='--', linewidth=1 )   
+
+      如果想要等多的定制化, 需要深入了解 matplotlib和 mpl_toolkits, 并找到能以一个简单且可管理的方式创建坐标轴网格的AxesGrid模块。
+
+. 例子代码: 5_gridTest.py
+
+. 工作原理
+
+      在函数get_demo_image 中, 从matplotlib 的样本数据目录中加载数据.
+
+      grid 列表保存了 axes 网格(本例中是 ImageGrid)   
+
+      变量 image1、image2、image3 保存了Z 的切片数据, 这些数据是根据grid列表的多个坐标轴切分的.
+
+      循环遍历所有的网络, 调用标准的imshow() 方法绘制出image1、image2、image3 的数据. matplotlib 确保所有图形的渲染是整洁的, 排列是整齐的.
